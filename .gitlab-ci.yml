@@ -1,10 +1,13 @@
+image: python:3.8-buster
+
+before_script:
+  - pip install mkdocs
+
 pages:
   stage: deploy
   script:
-    - mkdir -p public
-    - cp README.md public
+  - cd doc/rapport/docs
+  - mkdocs build --strict --verbose
   artifacts:
     paths:
-      - public
-  only:
-    - master
+    - public
