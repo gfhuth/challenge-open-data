@@ -1,9 +1,8 @@
 pages:
   stage: deploy
   script:
-    - mkdir .public
-    - cp -r README.md .public
-    - mv .public public
+    - mkdir -p public
+    - cp README.md public
   artifacts:
     paths:
       - public
