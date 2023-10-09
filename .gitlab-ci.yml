@@ -8,6 +8,8 @@ pages:
   script:
   - cd doc/rapport
   - mkdocs build --strict --verbose
+  - cd ../..
+  - cp -r doc/rapport/site/* public
   artifacts:
     paths:
     - public
