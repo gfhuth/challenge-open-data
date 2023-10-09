@@ -9,7 +9,8 @@ pages:
   - cd doc/rapport
   - mkdocs build --strict --verbose
   - cd ../..
-  - cp -r doc/rapport/site/* .
+  - mkdir -p public
+  - cp -r doc/rapport/site/* public
   artifacts:
     paths:
     - public
