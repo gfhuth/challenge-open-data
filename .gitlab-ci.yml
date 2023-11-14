@@ -6,11 +6,11 @@ before_script:
 pages:
   stage: deploy
   script:
-  - cd doc/rapport
+  - cd doc
   - mkdocs build --strict --verbose
-  - cd ../..
+  - cd ..
   - mkdir -p public
-  - cp -r doc/rapport/site/* public
+  - cp -r doc/site/* public
   artifacts:
     paths:
     - public
