@@ -30,6 +30,13 @@ On peut aussi choisir des plats typiquement français (qui sont disposés en des
 Une fois les ingrédients sélectionnés dans une assiette, le graphique indique la contribution de chaque ingrédient du plat à l'empreinte carbone, mesurée en équivalent de gaz à effet de serre.  
 Nous disposons de différentes assiettes qui peuvent être assemblées séparément, ce qui nous permet de comparer l'empreinte carbone de chaque plat.
 
+Voici un aperçu de ce qui est attendu:
+
+<figure>
+  <img src="../pictures/project-preview.png" width="600" />
+  <figcaption>Prévisualisation</figcaption>
+</figure>
+
 ## Architecture et bibliothèques
 
 Pour afficher les données sous forme de page web, nous avons choisi de rester sur un fonctionnement assez simple, en n'utilisant aucun framework Javascript autre que D3.Js pour l'affichage des différents graphiques.
