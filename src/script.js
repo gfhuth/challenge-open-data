@@ -35,7 +35,7 @@ async function parseCSV(){
 function parse_rows2Ingredient(row){
         const values = row.split(',');
         const obj_name = values[0]
-        const obj_ghg_kg = values[2]
+        const obj_ghg_kg = parseFloat(values[2])
         const obj_gprot_kg = obj_ghg_kg*100/values[4]
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
         const obj_kcalcarb_kg = (obj_ghg_kg*1000/values[3]) - (obj_gprot_kg*4 + obj_gfat_kg*9)
