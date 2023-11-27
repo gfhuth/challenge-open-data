@@ -1,10 +1,9 @@
-import * as d3 from "d3"
-//import parseCSV from "../script.js"
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 // set the dimensions and margins of the graph
-var margin = {top: 30, right: 30, bottom: 70, left: 60},
-	width = 460 - margin.left - margin.right,
-	height = 400 - margin.top - margin.bottom;
+const margin = {top: 10, right: 30, bottom: 20, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#bar-chart")
@@ -19,14 +18,16 @@ var svg = d3.select("#bar-chart")
 d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv").then( function(data) {
 
     // List of subgroups = header of the csv files = soil condition here
-    const subgroups = data.columns.slice(1) //TODO check right separation
-
+    const ingredients = data.columns.slice(1) //TODO check right separation
+    
     // List of groups = species here = value of the first column called group -> I show them on the X axis
-    const groups = data.map(d => (d.group))
+    const plates = data.map(d => (d.group))
 
+    console.log(plates, ingredients)
+    
     // Add X axis
     const x = d3.scaleBand()
-        .domain(groups) //liste des plats
+        .domain(plates)
         .range([0, width])
         .padding([0.2])
     svg.append("g")
@@ -34,35 +35,50 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
         .call(d3.axisBottom(x).tickSizeOuter(0));
 
     // Add Y axis
-    const y = d3.scaleLinear()
+    const y_1 = d3.scaleLinear() // first value
         .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
         .range([ height, 0 ]); 
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y_1));
+    
+    const y_2 = d3.scaleLinear()// second value
+        .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
+        .range([ height, 0 ]); 
+    svg.append("g")
+        .call(d3.axisRight(y_2)); //TODO : put on full right
+
+    // Another scale for subgroup position?
+    const xSubgroup = d3.scaleBand()
+        .domain(ingredients)
+        .range([0, x.bandwidth()])
+        .padding([0.05])
+
 
     // color palette = one color per subgroup
     const color = d3.scaleOrdinal()
-        .domain(subgroups)
-        .range(['#e41a1c','#377eb8','#4daf4a']) //TODO : dynamiser l'attribution des couleurs en fonction du nb d'ingrédient
+        .domain(ingredients)
+        .range(['#e41a1c','#377eb8','#4daf4a']) 
+        //TODO :  faire une liste de couleur (bouclera naturellement sur range si tailles différentes)
+    
 
     //stack the data? --> stack per subgroup
     const stackedData = d3.stack()
-        .keys(subgroups)
+        .keys(ingredients)
         (data)
 
     // Show the bars
     svg.append("g")
         .selectAll("g")
-    // Enter in the stack data = loop key per key = group per group
-    .data(stackedData)
-    .join("g")
-        .attr("fill", d => color(d.key))
+        // Enter in the data = loop key per key = group per group
+        .data(data)
+        .join("g")
+            .attr("transform", d => `translate(${x(d.group)}, 0)`)
         .selectAll("rect")
-        // enter a second time = loop subgroup per subgroup to add all rectangles
-        .data(d => d)
+        .data(function(d) { return ingredients.map(function(key) { return {key: key, value: d[key]}; }); })
         .join("rect")
-        .attr("x", d => x(d.data.group))
-        .attr("y", d => y(d[1]))
-        .attr("height", d => y(d[0]) - y(d[1]))
-        .attr("width",x.bandwidth())
-})
+            .attr("x", d => xSubgroup(d.key))
+            .attr("y", d => y_1(d.value))
+            .attr("width", xSubgroup.bandwidth())
+            .attr("height", d => height - y_1(d.value))
+            .attr("fill", d => color(d.key));
+    })
