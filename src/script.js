@@ -18,9 +18,12 @@ class Ingredient {
 } 
 
 class Recipe {
+    static recipes = {}
+
     constructor(name) {
         this.name = name;
         this.ingredients = new Map(Ingredient, int);
+        Recipe.recipes[name] = this;
     }
 
     getLipides() {
