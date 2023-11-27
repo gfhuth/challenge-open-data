@@ -1,77 +1,68 @@
 import * as d3 from "d3"
+//import parseCSV from "../script.js"
 
-// TODO set the dimensions and margins of the graph
+// set the dimensions and margins of the graph
 var margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+	width = 460 - margin.left - margin.right,
+	height = 400 - margin.top - margin.bottom;
 
-//? append the svg object to the body of the page
+// append the svg object to the body of the page
 var svg = d3.select("#bar-chart")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+    .append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
-// Initialize the X axis
-var x = d3.scaleBand()
-  .range([ 0, width ])
-  .padding(0.2);
-var xAxis = svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
+// Parse the Data
+//TODO : récupérer en CSV les plats à plot (faire attention à la structure avec sous-groupes)
+d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv").then( function(data) {
 
-// Initialize the Y axis
-var y = d3.scaleLinear()
-  .range([ height, 0]);
-var yAxis = svg.append("g")
-  .attr("class", "myYaxis")
+    // List of subgroups = header of the csv files = soil condition here
+    const subgroups = data.columns.slice(1) //TODO check right separation
 
+    // List of groups = species here = value of the first column called group -> I show them on the X axis
+    const groups = data.map(d => (d.group))
 
-// A function that create / update the plot for a given variable:
-function update(selectedVar) {
-
-  // TODO Parse the Data
-  d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/barplot_change_data.csv", function(data) {
-
-    // X axis
-    x.domain(data.map(function(d) { return d.group; }))
-    xAxis.transition().duration(1000).call(d3.axisBottom(x))
+    // Add X axis
+    const x = d3.scaleBand()
+        .domain(groups) //liste des plats
+        .range([0, width])
+        .padding([0.2])
+    svg.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0));
 
     // Add Y axis
-    y.domain([0, d3.max(data, function(d) { return +d[selectedVar] }) ]);
-    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+    const y = d3.scaleLinear()
+        .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
+        .range([ height, 0 ]); 
+    svg.append("g")
+        .call(d3.axisLeft(y));
 
-    // variable u: map data to existing bars
-    var u = svg.selectAll("rect")
-      .data(data)
+    // color palette = one color per subgroup
+    const color = d3.scaleOrdinal()
+        .domain(subgroups)
+        .range(['#e41a1c','#377eb8','#4daf4a']) //TODO : dynamiser l'attribution des couleurs en fonction du nb d'ingrédient
 
-    // update bars
-    u
-      .enter()
-      .append("rect")
-      .merge(u)
-      .transition()
-      .duration(1000)
-        .attr("x", function(d) { return x(d.group); })
-        .attr("y", function(d) { return y(d[selectedVar]); })
-        .attr("width", x.bandwidth())
-        .attr("height", function(d) { return height - y(d[selectedVar]); })
-        .attr("fill", "#69b3a2")
-  })
+    //stack the data? --> stack per subgroup
+    const stackedData = d3.stack()
+        .keys(subgroups)
+        (data)
 
-}
-
-// Initialize plot
-update('var1')
-
-  Plot.plot({
-    x: {axis: null},
-    y: {tickFormat: "s"},
-    fx: {label: null},
-    color: {scheme: "spectral"},
-    marks: [
-      Plot.barY(data, {fx: "state", x:"age", y: "population", fill: "age", sort: {color: null, x: null, fx: {value: "-y", reduce: "sum"}}}),
-      Plot.ruleY([0])
-    ]
-  })
+    // Show the bars
+    svg.append("g")
+        .selectAll("g")
+    // Enter in the stack data = loop key per key = group per group
+    .data(stackedData)
+    .join("g")
+        .attr("fill", d => color(d.key))
+        .selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(d => d)
+        .join("rect")
+        .attr("x", d => x(d.data.group))
+        .attr("y", d => y(d[1]))
+        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("width",x.bandwidth())
+})
