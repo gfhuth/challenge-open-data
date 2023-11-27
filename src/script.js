@@ -6,12 +6,14 @@ function getAndParseDataset() {
 
 
 class Ingredient {
-    constructor(_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg) {
+    constructor(_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
       this.name = _name;
       this.ghg_kg = _ghg_kg;
       this.gprot_kg = _gprot_kg
       this.gfat_kg = _gfat_kg
       this.gcarb_kg = _gcarb_kg
+      this.land_use_kg = _land_use_kg
+      this.water_kg = _water_kg
     }
 } 
 
@@ -39,12 +41,16 @@ function parse_rows2Ingredient(row){
         const obj_gprot_kg = obj_ghg_kg*100/values[4]
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
         const obj_kcalcarb_kg = (obj_ghg_kg*1000/values[3]) - (obj_gprot_kg*4 + obj_gfat_kg*9)
+        const obj_land_use_kg = parseFloat(values[6])
+        const obj_water_kg = parseFloat(values[18])
         const obj = new Ingredient(
             obj_name,
             obj_ghg_kg,
             obj_gprot_kg,
             obj_gfat_kg,
-            obj_kcalcarb_kg/4
+            obj_kcalcarb_kg/4,
+            obj_land_use_kg,
+            obj_water_kg
         );
         return obj;
 }
