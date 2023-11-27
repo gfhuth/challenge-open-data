@@ -22,6 +22,30 @@ class Recipe {
         this.name = name;
         this.ingredients = new Map(Ingredient, int);
     }
+
+    getLipides() {
+        qte_lipides = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_lipides += key._gfat_kg*(value/1000);
+        }
+        return qte_lipides;
+    }
+
+    getGlucides() {
+        qte_glucides = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_glucides += key._gcarb_kg*(value/1000);
+        }
+        return qte_glucides;
+    }
+
+    getProteines() {
+        qte_proteines = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_proteines += key._gprot_kg*(value/1000);
+        }
+        return qte_proteines;
+    }
 } 
 
 async function parseCSV(){
@@ -65,55 +89,55 @@ ingredients = parseCSV()
 
 /* Cassoulet */
 const cassoulet = new Recipe("cassoulet");
-cassoulet.ingredients.set(ingredients["beans"], 400);
-cassoulet.ingredients.set(ingredients["pork_loin"], 200);
-cassoulet.ingredients.set(ingredients["pork_sausages"], 320);
+cassoulet.ingredients.set(ingredients["beans"], 100);
+cassoulet.ingredients.set(ingredients["pork_loin"], 50);
+cassoulet.ingredients.set(ingredients["pork_sausages"], 80);
 
 /* Poulet basquaise */
 const poulet_basquaise = new Recipe("poulet_basquaise");
-poulet_basquaise.ingredients.set(ingredient["chicken_breast"], 1500);
-poulet_basquaise.ingredients.set(ingredient["tomatoes"], 1000);
-poulet_basquaise.ingredients.set(ingredient["peppers"], 700);
-poulet_basquaise.ingredients.set(ingredient["onions"], 300);
-poulet_basquaise.ingredients.set(ingredient["olive_oil"], 3);
+poulet_basquaise.ingredients.set(ingredient["chicken_breast"], 250);
+poulet_basquaise.ingredients.set(ingredient["tomatoes"], 167);
+poulet_basquaise.ingredients.set(ingredient["peppers"], 117);
+poulet_basquaise.ingredients.set(ingredient["onions"], 50);
+poulet_basquaise.ingredients.set(ingredient["olive_oil"], 1);
 
 /* Raclette */
 const raclette = new Recipe("raclette");
-raclette.ingredients.set(ingredient["potatoes"], 1000);
-raclette.ingredients.set(ingredient["cheddar_cheese"], 800);
-raclette.ingredients.set(ingredient["onions"], 50);
+raclette.ingredients.set(ingredient["potatoes"], 250);
+raclette.ingredients.set(ingredient["cheddar_cheese"], 200);
+raclette.ingredients.set(ingredient["onions"], 12);
 
 /* Quiche lorraine */
 const quiche_lorraine = new Recipe("quiche_lorraine");
-quiche_lorraine.ingredients.set(ingredient["quiche"], 700);
+quiche_lorraine.ingredients.set(ingredient["quiche"], 350);
 
 /* Gratin dauphinois */
 const gratin_dauphinois = new Recipe("gratin_dauphinois");
-gratin_dauphinois.ingredients.set(ingredient["potatoes"], 1500);
-gratin_dauphinois.ingredients.set(ingredient["cow's_milk"], 900); //vérifier les noms des ingrédients !!!
-gratin_dauphinois.ingredients.set(ingredient["butter"], 100);
-gratin_dauphinois.ingredients.set(ingredient["sunflower_oil"], 200);
+gratin_dauphinois.ingredients.set(ingredient["potatoes"], 250);
+gratin_dauphinois.ingredients.set(ingredient["cow's_milk"], 183); //vérifier les noms des ingrédients !!!
+gratin_dauphinois.ingredients.set(ingredient["butter"], 17);
+gratin_dauphinois.ingredients.set(ingredient["sunflower_oil"], 100);
 
 /* Boeuf bourguignon */
 const boeuf_bourguignon = new Recipe("boeuf_bourguignon");
-boeuf_bourguignon.ingredients.set(ingredient["beef_mince"], 600);
-boeuf_bourguignon.ingredients.set(ingredient["butter"], 100);
-boeuf_bourguignon.ingredients.set(ingredient["carrots"], 1500);
-boeuf_bourguignon.ingredients.set(ingredient["onions"], 200);
-boeuf_bourguignon.ingredients.set(ingredient["wine"], 2);
+boeuf_bourguignon.ingredients.set(ingredient["beef_mince"], 150);
+boeuf_bourguignon.ingredients.set(ingredient["butter"], 25);
+boeuf_bourguignon.ingredients.set(ingredient["carrots"], 375);
+boeuf_bourguignon.ingredients.set(ingredient["onions"], 50);
+boeuf_bourguignon.ingredients.set(ingredient["wine"], 1);
 
 /* Choucroute */
 const choucroute = new Recipe("choucroute");
-choucroute.ingredients.set(ingredient["cabbage"], 2000);
-choucroute.ingredients.set(ingredient["onions"], 100);
-choucroute.ingredients.set(ingredient["pork_sausages"], 1000);
-choucroute.ingredients.set(ingredient["pork_loin"], 1500);
-choucroute.ingredients.set(ingredient["potatoes"], 3000);
-choucroute.ingredients.set(ingredient["bacon"], 30);
+choucroute.ingredients.set(ingredient["cabbage"], 250);
+choucroute.ingredients.set(ingredient["onions"], 12);
+choucroute.ingredients.set(ingredient["pork_sausages"], 100);
+choucroute.ingredients.set(ingredient["pork_loin"], 87);
+choucroute.ingredients.set(ingredient["potatoes"], 87);
+choucroute.ingredients.set(ingredient["bacon"], 87);
 
 /* Tarte tatin */
 const tarte_tatin = new Recipe("tarte_tatin");
-tarte_tatin.ingredients.set(ingredient["apple_pie"], 750);
+tarte_tatin.ingredients.set(ingredient["apple_pie"], 188);
 
 /* Croissant */
 const croissant = new Recipe("croissant");
@@ -125,45 +149,78 @@ pain_chocolat.ingredients.set(ingredient["pain_au_chocolat"], 60);
 
 /* Lasagnes bolognaise */
 const lasagnes_bolognaise = new Recipe("lasagnes_bolognaise");
-lasagnes_bolognaise.ingredients.set(ingredient["tomatoes"], 500);
-lasagnes_bolognaise.ingredients.set(ingredient["beef_steak"], 250);
-lasagnes_bolognaise.ingredients.set(ingredient["olive_oil"], 2);
-lasagnes_bolognaise.ingredients.set(ingredient["lasagne_sheets"], 500);
+lasagnes_bolognaise.ingredients.set(ingredient["tomatoes"], 212);
+lasagnes_bolognaise.ingredients.set(ingredient["beef_steak"], 125);
+lasagnes_bolognaise.ingredients.set(ingredient["olive_oil"], 1);
+lasagnes_bolognaise.ingredients.set(ingredient["lasagne_sheets"], 125);
+lasagnes_bolognaise.ingredients.set(ingredient["onions"], 12);
+lasagnes_bolognaise.ingredients.set(ingredient["carrots"], 25);
+lasagnes_bolognaise.ingredients.set(ingredient["wine"], 1);
 
 /* Spaghetti carbonara */
 const spaghetti_carbonara = new Recipe("spaghetti_carbonara");
-spaghetti_carbonara.ingredients.set(ingredient["penne_pasta"], 200);
-spaghetti_carbonara.ingredients.set(ingredient["eggs"], 20);
-spaghetti_carbonara.ingredients.set(ingredient["bacon"], 160);
-spaghetti_carbonara.ingredients.set(ingredient["parmesan_cheese"], 60);
-spaghetti_carbonara.ingredients.set(ingredient["cow's_milk"], 50);
-spaghetti_carbonara.ingredients.set(ingredient["sunflower_oil"], 100);
+spaghetti_carbonara.ingredients.set(ingredient["penne_pasta"], 50);
+spaghetti_carbonara.ingredients.set(ingredient["eggs"], 5);
+spaghetti_carbonara.ingredients.set(ingredient["bacon"], 40);
+spaghetti_carbonara.ingredients.set(ingredient["parmesan_cheese"], 15);
+spaghetti_carbonara.ingredients.set(ingredient["cow's_milk"], 12);
+spaghetti_carbonara.ingredients.set(ingredient["sunflower_oil"], 25);
 
 /* Risotto */
 const risotto = new Recipe("risotto");
-risotto.ingredients.set(ingredient["onions"], 50);
-risotto.ingredients.set(ingredient["butter"], 20);
-risotto.ingredients.set(ingredient["olive_oil"], 2);
-risotto.ingredients.set(ingredient["mushrooms"], 250);
-risotto.ingredients.set(ingredient["rice"], 200);
-risotto.ingredients.set(ingredient["parmesan_cheese"], 50);
+risotto.ingredients.set(ingredient["onions"], 25);
+risotto.ingredients.set(ingredient["butter"], 10);
+risotto.ingredients.set(ingredient["olive_oil"], 1);
+risotto.ingredients.set(ingredient["mushrooms"], 125);
+risotto.ingredients.set(ingredient["rice"], 100);
+risotto.ingredients.set(ingredient["parmesan_cheese"], 25);
 
 /* Saucisses au curry */
 const saucisses_curry = new Recipe("saucisses_curry");
-saucisses_curry.ingredients.set(ingredient["tomatoes"], 50);
-saucisses_curry.ingredients.set(ingredient["pork_sausages"], 100);
-saucisses_curry.ingredients.set(ingredient["olive_oil"], 2);
-saucisses_curry.ingredients.set(ingredient["onions"], 100);
+saucisses_curry.ingredients.set(ingredient["tomatoes"], 25);
+saucisses_curry.ingredients.set(ingredient["pork_sausages"], 25);
+saucisses_curry.ingredients.set(ingredient["olive_oil"], 1);
+saucisses_curry.ingredients.set(ingredient["onions"], 25);
 
 /* Hot dog */
 const hot_dog = new Recipe("hot_dog");
-hot_dog.ingredients.set(ingredient["bread"], 250);
-hot_dog.ingredients.set(ingredient["pork_sausages"], 40);
+hot_dog.ingredients.set(ingredient["bread"], 142);
+hot_dog.ingredients.set(ingredient["pork_sausages"], 50);
 hot_dog.ingredients.set(ingredient["tomato_ketchup"], 1);
-hot_dog.ingredients.set(ingredient["onions"], 30);
+hot_dog.ingredients.set(ingredient["onions"], 25);
 
 /* Mac and cheese */
 const mac_and_cheese = new Recipe("mac_and_cheese");
-mac_and_cheese.ingredients.set(ingredient["macaroni_cheese"], 450);
-mac_and_cheese.ingredients.set(ingredient["cow's milk"], 4);
-mac_and_cheese.ingredients.set(ingredient["butter"], 20);
+mac_and_cheese.ingredients.set(ingredient["macaroni_cheese"], 112);
+mac_and_cheese.ingredients.set(ingredient["cow's milk"], 1);
+mac_and_cheese.ingredients.set(ingredient["butter"], 5);
+
+
+/*============= Fonctions calculant lipides, protéines, glucides =============*/
+
+/* Lipides */
+function getLipides(plat) {
+    qte_lipides = 0;
+    for (const [key, value] of plat.ingredients) {
+        qte_lipides += key._gfat_kg*(value/1000);
+    }
+    return qte_lipides;
+}
+
+/* Glucides */
+function getGlucides(plat) {
+    qte_glucides = 0;
+    for (const [key, value] of plat.ingredients) {
+        qte_glucides += key._gcarb_kg*(value/1000);
+    }
+    return qte_glucides;
+}
+
+/* Protéines */
+function getProteines(plat) {
+    qte_proteines = 0;
+    for (const [key, value] of plat.ingredients) {
+        qte_proteines += key._gprot_kg*(value/1000);
+    }
+    return qte_proteines;
+}
