@@ -197,33 +197,3 @@ const mac_and_cheese = new Recipe("mac_and_cheese");
 mac_and_cheese.ingredients.set(ingredient["macaroni_cheese"], 112);
 mac_and_cheese.ingredients.set(ingredient["cow's milk"], 1);
 mac_and_cheese.ingredients.set(ingredient["butter"], 5);
-
-
-/*============= Fonctions calculant lipides, protéines, glucides =============*/
-
-/* Lipides */
-function getLipides(plat) {
-    qte_lipides = 0;
-    for (const [key, value] of plat.ingredients) {
-        qte_lipides += key._gfat_kg*(value/1000);
-    }
-    return qte_lipides;
-}
-
-/* Glucides */
-function getGlucides(plat) {
-    qte_glucides = 0;
-    for (const [key, value] of plat.ingredients) {
-        qte_glucides += key._gcarb_kg*(value/1000);
-    }
-    return qte_glucides;
-}
-
-/* Protéines */
-function getProteines(plat) {
-    qte_proteines = 0;
-    for (const [key, value] of plat.ingredients) {
-        qte_proteines += key._gprot_kg*(value/1000);
-    }
-    return qte_proteines;
-}
