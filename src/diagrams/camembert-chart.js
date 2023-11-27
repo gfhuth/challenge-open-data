@@ -1,7 +1,22 @@
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const width = 928;
 const height = width;
 const radius = width / 6;
+
+async function loadJSON() {
+    try {
+        const reponse = await fetch('diagrams/data_test_obj.json');
+        if (!reponse.ok) {
+            throw new Error(`Request error: ${reponse.status}`);
+        }
+        const dados = await reponse.json();
+        return dados;
+    } catch (erro) {
+        console.error('Error loading the JSON file:', erro.message);
+    }
+}
+const data = await loadJSON();
 
 // Create the color scale.
 const color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
@@ -117,3 +132,5 @@ function labelTransform(d) {
     const y = (d.y0 + d.y1) / 2 * radius;
     return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
 }
+
+document.getElementById('svg-container').appendChild(svg.node());
