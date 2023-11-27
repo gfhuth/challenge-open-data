@@ -88,6 +88,7 @@ template.innerHTML = /*html*/ `
     transform: rotate(45deg) translate(0%, -50%);
     background-color: #fff;
     border-radius: 1000px;
+    cursor: pointer;
   }
 
   .delete-meal::before {
@@ -114,8 +115,19 @@ template.innerHTML = /*html*/ `
 </style>
 `;
 
+class MealsChangedEvent extends Event {
+  constructor(data) {
+    super("mealschanged", {
+      detail: {
+        message: "Meals changed",
+      },
+    });
+    this.data = data;
+  }
+}
+
 class Meal extends HTMLElement {
-  static observedAttributes = ["meals"];
+  static observedAttributes = ["meals", "onmealschanged"];
 
   constructor() {
     super();
@@ -129,6 +141,10 @@ class Meal extends HTMLElement {
     this.selectionInProgress = false;
     this.shadowRoot.getElementById("select-meal").onclick =
       this.selectMeal.bind(this);
+    document.addEventListener("click", () => {
+      this.selectionInProgress = false;
+      this.showOrHide();
+    });
   }
 
   showOrHide() {
@@ -142,21 +158,22 @@ class Meal extends HTMLElement {
     return this.selectionInProgress;
   }
 
-  selectMeal() {
-    console.log("select", this.selectionInProgress);
+  selectMeal(event) {
+    event.stopPropagation();
     this.selectionInProgress = !this.selectionInProgress;
     if (!this.showOrHide()) return;
 
     const meals = this.meals;
     const list = this.shadowRoot.getElementById("select-meal-list");
     list.innerHTML = "";
-    meals.forEach((meal) => {
-      const elem = document.createElement("span");
-      elem.classList.add("elem-meal");
-      elem.innerHTML = meal;
-      elem.onclick = () => this.addMeal(meal);
-      list.appendChild(elem);
-    });
+    meals
+      .filter((meal) => this.selectedMeals.indexOf(meal) < 0).forEach((meal) => {
+        const elem = document.createElement("span");
+        elem.classList.add("elem-meal");
+        elem.innerHTML = meal;
+        elem.onclick = () => this.addMeal(meal);
+        list.appendChild(elem);
+      });
 
     const createMeal = document.createElement("span");
     createMeal.classList.add("elem-meal");
@@ -165,20 +182,24 @@ class Meal extends HTMLElement {
     list.appendChild(createMeal);
   }
 
-  createMeal() {
+  createMeal() {}
 
+  notify() {
+    this.dispatchEvent(new MealsChangedEvent(this.selectedMeals));
   }
 
   addMeal(meal) {
     if (this.selectedMeals.indexOf(meal) >= 0) return;
     this.selectedMeals.push(meal);
     this.updateMeals();
+    this.notify();
   }
 
   removeMeal(meal) {
     if (this.selectedMeals.indexOf(meal) < 0) return;
     this.selectedMeals.splice(this.selectedMeals.indexOf(meal), 1);
     this.updateMeals();
+    this.notify();
   }
   updateMeals() {
     const meals = this.selectedMeals;
@@ -197,9 +218,13 @@ class Meal extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (typeof newValue === "string") newValue = JSON.parse(newValue);
-    console.log(name, newValue);
+    if (name === "meals") newValue = JSON.parse(newValue);
     this[name] = newValue;
+    if (name === "onmealschanged") {
+      if (window[newValue] && typeof window[newValue] === 'function') {
+        this.addEventListener("mealschanged", window[newValue]);
+      }
+    }
   }
 }
 
