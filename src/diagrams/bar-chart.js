@@ -42,9 +42,6 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
 	  }
 	];
 
-    // Object.entries(data).forEach(([key, value]) => {
-    //     console.log(Object.keys(value['type1']));
-    //  });
     // creation stack
 	var datasets = [
         d3.stack()
@@ -97,51 +94,81 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
         .call(d3.axisBottom(x).tickSizeOuter(0));
 
     // Add Y axis -> cacher l'axe et mettre label sur chaque barre ?
+
+    var ydomain_max = d3.max(datasets.flat().map(function(row) {
+        return d3.max(row.map(function(d) {
+            return d[1];
+        }));
+    }));
+
     const y_1 = d3.scaleLinear() // first value
-        .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
-        .range([ height, 0 ]); 
+    .domain([0, ydomain_max])
+    .range([ height, 0 ]); 
     svg.append("g")
-        .call(d3.axisLeft(y_1));
+    .call(d3.axisLeft(y_1));
     
-    const y_2 = d3.scaleLinear()// second value
-        .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
-        .range([ height, 0 ]); 
-    svg.append("g")
-        .call(d3.axisRight(y_2)); //TODO : put on full right
+    var accent = d3.scaleOrdinal(d3.schemeBlues[6]);
+    var xaxis = d3.axisBottom(x);
+    var yaxis = d3.axisLeft(y_1);
 
-    // Another scale for subgroup position?
-    const xSubgroup = d3.scaleBand()
-        .domain(ingredients)
-        .range([0, x.bandwidth()])
-        .padding([0.05])
+    // // Another scale for subgroup position?
+    // const xSubgroup = d3.scaleBand()
+    //     .domain(ingredients)
+    //     .range([0, x.bandwidth()])
+    //     .padding([0.05])
 
-
-    // color palette = one color per subgroup
-    const color = d3.scaleOrdinal()
-        .domain(ingredients)
-        .range(['#e41a1c','#377eb8','#4daf4a']) 
-        //TODO :  faire une liste de couleur (bouclera naturellement sur range si tailles différentes)
+    // // color palette = one color per subgroup
+    // const color = d3.scaleOrdinal()
+    //     .domain(ingredients)
+    //     .range(['#e41a1c','#377eb8','#4daf4a']) 
+    //     //TODO :  faire une liste de couleur (bouclera naturellement sur range si tailles différentes)
     
 
-    //stack the data? --> stack per subgroup
-    const stackedData = d3.stack()
-        .keys(ingredients)
-        (data)
+    // //stack the data? --> stack per subgroup
+    // const stackedData = d3.stack()
+    //     .keys(ingredients)
+    //     (data)
 
-    // Show the bars
-    svg.append("g")
-        .selectAll("g")
-        // Enter in the data = loop key per key = group per group
-        .data(data)
-        .join("g")
-            .attr("transform", d => `translate(${x(d.group)}, 0)`)
-        .selectAll("rect")
-        .data(function(d) { return ingredients.map(function(key) { return {key: key, value: d[key]}; }); })
-        .join("rect")
-            .attr("x", d => xSubgroup(d.key))
-            .attr("y", d => y_1(d.value))
-            .attr("width", xSubgroup.bandwidth())
-            .attr("height", d => height - y_1(d.value))
-            .attr("fill", d => color(d.key));
-        //TODO  : enter in loop for each bar
+    d3.range(num_groups).forEach(function(gnum) {
+        svg.selectAll('g.group' + gnum)
+            .data(datasets[gnum])
+            .enter()
+            .append('g')
+            .attr('fill', accent)
+            .attr('class', 'group' + gnum)
+            .selectAll('rect')
+            .data(d => d)
+            .enter()
+            .append('rect')
+            .attr('x', (d, i) => x(xlabels[i]) + (x.bandwidth() / num_groups) * gnum)
+            .attr('y', d => y_1(d[1]))
+            .attr('width', x.bandwidth() / num_groups)
+            .attr('height', d => y_1(d[0]) - y_1(d[1]));
+      });
+  
+    svg.append('g')
+        .attr('class', 'axis x')
+        .attr('transform', 'translate(0,' + (height) + ")")
+        .call(xaxis);
+    svg.append('g')
+        .attr('class', 'axis y')
+        .attr('transform', 'translate(' + padding + ",0)")
+        .call(yaxis);
+
+    // // Show the bars
+    // svg.append("g")
+    //     .selectAll("g")
+    //     // Enter in the data = loop key per key = group per group
+    //     .data(data)
+    //     .join("g")
+    //         .attr("transform", d => `translate(${x(d.group)}, 0)`)
+    //     .selectAll("rect")
+    //     .data(function(d) { return ingredients.map(function(key) { return {key: key, value: d[key]}; }); })
+    //     .join("rect")
+    //         .attr("x", d => xSubgroup(d.key))
+    //         .attr("y", d => y_1(d.value))
+    //         .attr("width", xSubgroup.bandwidth())
+    //         .attr("height", d => height - y_1(d.value))
+    //         .attr("fill", d => color(d.key));
+    //     //TODO  : enter in loop for each bar
     })
