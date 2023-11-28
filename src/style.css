@@ -2,11 +2,11 @@ html {
     --background: #5e5e5e93;
 }
 
-#bar-diagram {
+/* #bar-diagram {
     width: 100%;
     height: calc(100vh - 120px);
     background-color: red;
-}
+} */
 
 body {
     display: flex;
@@ -44,4 +44,8 @@ body {
     height: 80vh;
     background-color: red;
     margin-bottom: 20vh;
+}
+#svg-container{
+    max-width: 900px;
+
 }
