@@ -1,31 +1,29 @@
+import { createBarChart, datas } from "./diagrams/bar-chart.js";
+
 const templateBarChart = document.createElement("template");
 templateBarChart.innerHTML = /*html*/ `
 <div>
-  <div class="square"></div>
+  <div id="bar-chart"></div>
 </div>
-<style>
-  .square {
-    width: 100%;
-    height: calc(100vh - 120px);
-    background-color: red;
-  }
-</style>
 `;
 
 class BarChart extends HTMLElement {
   static observedAttributes = ["data"];
-
   constructor() {
     super();
+    
     this.attachShadow({
       mode: "open",
     });
     this.shadowRoot.append(templateBarChart.content.cloneNode(true));
     this.render();
   }
-
-  render() {}
-
+  
+  render() {
+    origin = this.shadowRoot.getElementById("bar-chart")
+    createBarChart(datas, origin)
+  }
+  
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "data") newValue = JSON.parse(newValue);
     this[name] = newValue;
