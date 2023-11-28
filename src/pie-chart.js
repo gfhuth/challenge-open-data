@@ -1,6 +1,6 @@
 const templatePieChart = document.createElement("template");
 templatePieChart.innerHTML = /*html*/ `
-<p>Nom du plat</p>
+<p id="name">Nom du plat</p>
 <div>
   <span class="rond"></span>
 </div>
@@ -24,10 +24,11 @@ class PieChart extends HTMLElement {
       mode: "open",
     });
     this.shadowRoot.append(templatePieChart.content.cloneNode(true));
-    this.render();
   }
 
-  render() {}
+  render() {
+    this.shadowRoot.getElementById('name').innerHTML = this.data.name;
+  }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "data") newValue = JSON.parse(newValue);
