@@ -1,24 +1,19 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-
-// set the dimensions and margins of the graph
-const margin = {top: 10, right: 30, bottom: 20, left: 50},
-width = 460 - margin.left - margin.right,
-height = 400 - margin.top - margin.bottom,
-padding = 40;
-
-// append the svg object to the body of the page
-var svg = d3.select("#bar-chart")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", `translate(${margin.left},${margin.top})`);
-
-
-// Create data
 //TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient) => formatb cf valeur de data
-function createBarChart(data) { 
+function createBarChart(data, origin) { 
+    // ---------- Constants ----------
+    const margin = {top: 10, right: 30, bottom: 20, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom,
+    padding = 40;
+    // ---------- Append the svg object to the body of the page ----------
+    var svg = d3.select(origin)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
     // ---------- Creation of separated stack bars ----------
 	var datasets = [
         d3.stack()
@@ -152,3 +147,4 @@ var datas = [{
         
         
 createBarChart(datas) // First call to draw
+export {createBarChart, datas};
