@@ -1,33 +1,95 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
+
 // set the dimensions and margins of the graph
 const margin = {top: 10, right: 30, bottom: 20, left: 50},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+width = 460 - margin.left - margin.right,
+height = 400 - margin.top - margin.bottom,
+padding = 40;
 
 // append the svg object to the body of the page
 var svg = d3.select("#bar-chart")
-    .append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", `translate(${margin.left},${margin.top})`);
+
 
 // Parse the Data
-//TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient)
+//TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient) => formatb cf valeur de data
 d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv").then( function(data) {
 
-    // List of subgroups = header of the csv files = soil condition here
-    const ingredients = data.columns.slice(1) //TODO check right separation
-    
-    // List of groups = species here = value of the first column called group -> I show them on the X axis
-    const plates = data.map(d => (d.group))
+      var data = [{
+	    Plate: "cat1",
+	    type1: {a:300, b:400},
+	    type2: {a:300, b:300},
+	  },
+	  {
+	    Plate: "cat2",
+	    type1: {a:300},
+	    type2: {a:300},
+	  },
+	  {
+	    Plate: "cat3",
+	    type1: {a:400, b:350},
+	    type2: {a:300, b:300},
+	  },
+	  {
+	    Plate: "cat4",
+	    type1: {a:200},
+	    type2: {a:200},
+	  }
+	];
 
-    console.log(plates, ingredients)
+    // Object.entries(data).forEach(([key, value]) => {
+    //     console.log(Object.keys(value['type1']));
+    //  });
+    // creation stack
+	var datasets = [
+        d3.stack()
+            .keys(()=>{
+                var ingredients = []; //list of keys
+                Object.entries(data).forEach(([typeName,typeIngr]) => {
+                    Object.keys(typeIngr['type1']).forEach(
+                        (ingr, value) => {
+                            if (!ingredients.includes(ingr)) ingredients.push(ingr) //add to list
+                        } 
+                    )
+                })
+                return ingredients
+            }
+            )
+            .value((obj, key) => obj.type1[key])(data), 
+        d3.stack()
+            .keys(()=>{
+                var ingredients = []; //list of keys
+                Object.entries(data).forEach(([typeName,typeIngr]) => {
+                    Object.keys(typeIngr['type2']).forEach(
+                        (ingr, value) => {
+                            if (!ingredients.includes(ingr)) ingredients.push(ingr) //add to list
+                        } 
+                    )
+                })
+                return ingredients
+            }
+            )
+            .value((obj, key) => obj.type2[key])(data)
+    ];
+
+        
+    var num_groups = datasets.length;
+    
+    var xlabels = data.map(function(d) {
+        return d['Plate']
+        });
+    
+
+    console.log(datasets, num_groups)
     
     // Add X axis
     const x = d3.scaleBand()
-        .domain(plates)
+        .domain(xlabels)
         .range([0, width])
         .padding([0.2])
     svg.append("g")
