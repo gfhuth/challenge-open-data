@@ -14,7 +14,7 @@ var svg = d3.select("#bar-chart")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parse the Data
-//TODO : récupérer en CSV les plats à plot (faire attention à la structure avec sous-groupes)
+//TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient)
 d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv").then( function(data) {
 
     // List of subgroups = header of the csv files = soil condition here
@@ -34,7 +34,7 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(x).tickSizeOuter(0));
 
-    // Add Y axis
+    // Add Y axis -> cacher l'axe et mettre label sur chaque barre ?
     const y_1 = d3.scaleLinear() // first value
         .domain([0, 60]) //TODO récupérer valeurs max en Y selon features
         .range([ height, 0 ]); 
@@ -81,4 +81,5 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
             .attr("width", xSubgroup.bandwidth())
             .attr("height", d => height - y_1(d.value))
             .attr("fill", d => color(d.key));
+        //TODO  : enter in loop for each bar
     })
