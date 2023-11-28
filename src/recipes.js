@@ -4,8 +4,8 @@ export class Recipe {
   static recipes = {}
 
   constructor(name, displayName) {
-      this.name = name;
-      this.displayName = displayName
+      this.id = name;
+      this.name = displayName
       this.ingredients = {};
       Recipe.recipes[name] = this;
   }

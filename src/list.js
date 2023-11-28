@@ -1,11 +1,11 @@
-const templateMeals = document.createElement("template");
-templateMeals.innerHTML = /*html*/ `
+const templateList = document.createElement("template");
+templateList.innerHTML = /*html*/ `
 <div id="container">
-  <div id="selected-meals">
+  <div id="selected-items">
     <!-- Liste des plats sélectionnés -->
-    <div id="select-meal">
+    <div id="select-item">
       <!-- Sélection d'un nouveau plat  -->
-      <div id="select-meal-list" style="display:none;"></div>
+      <div id="select-item-list" style="display:none;"></div>
     </div>
   </div>
 </div>
@@ -15,7 +15,7 @@ templateMeals.innerHTML = /*html*/ `
   }
 
   #container,
-  #selected-meals {
+  #selected-items {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -23,7 +23,7 @@ templateMeals.innerHTML = /*html*/ `
     gap: 0.6rem;
   }
 
-  #select-meal {
+  #select-item {
     width: 32px;
     height: 32px;
     display: block;
@@ -33,8 +33,8 @@ templateMeals.innerHTML = /*html*/ `
     cursor: pointer;
   }
 
-  #select-meal::after,
-  #select-meal::before {
+  #select-item::after,
+  #select-item::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -44,17 +44,17 @@ templateMeals.innerHTML = /*html*/ `
     background-color: black;
   }
 
-  #select-meal::before {
+  #select-item::before {
     height: 60%;
     width: 2px;
   }
 
-  #select-meal::after {
+  #select-item::after {
     height: 2px;
     width: 60%;
   }
 
-  #select-meal-list {
+  #select-item-list {
     bottom: 0;
     left: 0;
     transform: translate(0, 100%);
@@ -66,13 +66,13 @@ templateMeals.innerHTML = /*html*/ `
     z-index: 1000;
   }
 
-  .elem-meal {
+  .dropdown-item {
     padding: 0.2rem 0.3rem;
     background-color: white;
     white-space: nowrap;
   }
 
-  .meal {
+  .chip-item {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,7 +84,7 @@ templateMeals.innerHTML = /*html*/ `
     border-radius: 16px;
   }
 
-  .delete-meal {
+  .delete-chip-item {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -96,18 +96,18 @@ templateMeals.innerHTML = /*html*/ `
     cursor: pointer;
   }
 
-  .delete-meal::before {
+  .delete-chip-item::before {
     height: 70%;
     width: 2px;
   }
 
-  .delete-meal::after {
+  .delete-chip-item::after {
     height: 2px;
     width: 70%;
   }
 
-  .delete-meal::before,
-  .delete-meal::after {
+  .delete-chip-item::before,
+  .delete-chip-item::after {
     transform-origin: center;
     top: 50%;
     left: 50%;
@@ -120,32 +120,32 @@ templateMeals.innerHTML = /*html*/ `
 </style>
 `;
 
-class MealsChangedEvent extends Event {
+class ListChangedEvent extends Event {
   constructor(data) {
-    super("mealschanged", {
+    super("listitemschanged", {
       detail: {
-        message: "Meals changed",
+        message: "list items changed",
       },
     });
     this.data = data;
   }
 }
 
-class Meal extends HTMLElement {
-  static observedAttributes = ["meals"];
+class List extends HTMLElement {
+  static observedAttributes = ["items"];
 
   constructor() {
     super();
     this.attachShadow({
       mode: "open",
     });
-    this.shadowRoot.append(templateMeals.content.cloneNode(true));
+    this.shadowRoot.append(templateList.content.cloneNode(true));
 
-    this.meals = [];
-    this.selectedMeals = [];
+    this.items = [];
+    this.selectedItems = [];
     this.selectionInProgress = false;
-    this.shadowRoot.getElementById("select-meal").onclick =
-      this.selectMeal.bind(this);
+    this.shadowRoot.getElementById("select-item").onclick =
+      this.selectItem.bind(this);
     document.addEventListener("click", () => {
       this.selectionInProgress = false;
       this.showOrHide();
@@ -154,81 +154,84 @@ class Meal extends HTMLElement {
 
   showOrHide() {
     if (!this.selectionInProgress) {
-      this.shadowRoot.getElementById("select-meal-list").style.display =
+      this.shadowRoot.getElementById("select-item-list").style.display =
         "none";
     } else {
-      this.shadowRoot.getElementById("select-meal-list").style.display =
+      this.shadowRoot.getElementById("select-item-list").style.display =
         "";
     }
     return this.selectionInProgress;
   }
 
-  selectMeal(event) {
+  selectItem(event) {
     event.stopPropagation();
     this.selectionInProgress = !this.selectionInProgress;
     if (!this.showOrHide()) return;
 
-    const meals = this.meals;
-    const list = this.shadowRoot.getElementById("select-meal-list");
+    const items = this.items;
+    const list = this.shadowRoot.getElementById("select-item-list");
     list.innerHTML = "";
-    meals
-      .filter((meal) => this.selectedMeals.indexOf(meal) < 0).forEach((meal) => {
+    items
+      .filter((item) => this.selectedItems.indexOf(item.id) < 0).forEach((item) => {
         const elem = document.createElement("span");
-        elem.classList.add("elem-meal");
-        elem.innerHTML = meal;
-        elem.onclick = () => this.addMeal(meal);
+        elem.classList.add("dropdown-item");
+        elem.innerHTML = item.name;
+        elem.onclick = () => this.addItem(item.id);
         list.appendChild(elem);
       });
 
-    const createMeal = document.createElement("span");
-    createMeal.classList.add("elem-meal");
-    createMeal.innerHTML = "Créer un plat";
-    createMeal.onclick = this.createMeal.bind(this);
-    list.appendChild(createMeal);
+    const createItem = document.createElement("span");
+    createItem.classList.add("dropdown-item");
+    createItem.innerHTML = "Créer un plat";
+    createItem.onclick = this.createItem.bind(this);
+    list.appendChild(createItem);
   }
 
-  createMeal() {}
+  createItem() {}
 
   notify() {
-    this.dispatchEvent(new MealsChangedEvent(this.selectedMeals));
+    this.dispatchEvent(new ListChangedEvent(this.selectedItems));
   }
 
-  addMeal(meal) {
-    if (this.selectedMeals.indexOf(meal) >= 0) return;
-    this.selectedMeals.push(meal);
-    this.updateMeals();
+  addItem(itemId) {
+    if (this.selectedItems.indexOf(itemId) >= 0) return;
+    this.selectedItems.push(itemId);
+    this.updateItems();
     this.notify();
   }
 
-  removeMeal(meal) {
-    if (this.selectedMeals.indexOf(meal) < 0) return;
-    this.selectedMeals.splice(this.selectedMeals.indexOf(meal), 1);
-    this.updateMeals();
+  removeItem(itemId) {
+    if (this.selectedItems.indexOf(itemId) < 0) return;
+    this.selectedItems.splice(this.selectedItems.indexOf(itemId), 1);
+    this.updateItems();
     this.notify();
   }
-  updateMeals() {
-    const meals = this.selectedMeals;
-    const list = this.shadowRoot.getElementById("selected-meals");
-    const children = list.querySelectorAll('.meal');
+  updateItems() {
+    const items = this.selectedItems;
+    const list = this.shadowRoot.getElementById("selected-items");
+    const children = list.querySelectorAll('.chip-item');
     children.forEach(child => list.removeChild(child))
-    const lastChild = list.querySelector("#select-meal")
+    const lastChild = list.querySelector("#select-item")
 
-    meals.forEach((meal) => {
+    items.forEach((itemId) => {
+      const item = this.items.find(item => item.id === itemId);
+      if (!item) return;
+
       const elem = document.createElement("span");
-      elem.classList.add("meal");
+      elem.classList.add("chip-item");
       const cross = document.createElement("span");
-      cross.classList.add("delete-meal");
-      cross.onclick = () => this.removeMeal(meal);
-      elem.innerText = meal;
+      cross.classList.add("delete-chip-item");
+      cross.onclick = () => this.removeItem(itemId);
+      elem.innerText = item.name;
       elem.appendChild(cross);
       list.insertBefore(elem, lastChild);
     });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "meals") newValue = JSON.parse(newValue);
+    if (name === "items") newValue = JSON.parse(newValue);
     this[name] = newValue;
   }
 }
 
-customElements.define("x-meals", Meal);
+customElements.define("x-list", List);

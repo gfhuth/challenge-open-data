@@ -46,8 +46,8 @@ window.onload = async () => {
     
     const mealsList = document.getElementById('meals-list')
     // mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.name)))
-    mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.displayName)))
-    mealsList.addEventListener('mealschanged', onSelectedMealsChanged)
+    mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
+    mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
 }
 
 function onSelectedMealsChanged(event) {
