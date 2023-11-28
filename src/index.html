@@ -1,62 +1,24 @@
-<!DOCTYPE html>
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="shortcut icon" href="#">
-  <title>Document</title>
-</head>
-
-<body>
-  <main>
-    <div id="charts">
-      <div id="svg-container"></div>
-      <div id="bar-chart"></div>
-    </div>
-    <x-meals id="meals-list" meals='["plat1", "plat2"]' onmealschanged="onMealsChanged"></x-meals>
-    <div id="pie-diagram">
-      <!-- Diagramme camembert des plats sélectionnés -->
-    </div>
-  </main>
-
-  <div class="diagrams">
-    <span>
-      <p>Nom du plat</p>
-      <div>
-        <span class="rond"></span>
-      </div>
-    </span>
-    <span>
-      <p>Nom du plat</p>
-      <div>
-        <span class="rond"></span>
-      </div>
-    </span>
-    <span>
-      <p>Nom du plat</p>
-      <div>
-        <span class="rond"></span>
-      </div>
-    </span>
-    <span>
-      <p>Nom du plat</p>
-      <div>
-        <span class="rond"></span>
-      </div>
-    </span>
-    <span>
-      <p>Nom du plat</p>
-      <div>
-        <span class="rond"></span>
-      </div>
-    </span>
-  </div>
-  <script src="script.js" type="module"></script>
-  <script src="meals.js"></script>
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <script type="module" src="diagrams/camembert-chart.js"></script>
-  <script type="module" src="diagrams/bar-chart.js"></script>
-</body>
-
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Document</title>
+    </head>
+    <body>
+      <main>
+        <div id="bar-diagram">
+          <!-- Diagramme en barre -->
+        </div>
+        <x-list id="meals-list"></x-list>
+        <div id="pie-diagram">
+          <!-- Diagramme camembert des plats sélectionnés -->
+          <x-diagram-list id="pie-charts" diagram="x-pie-chart"></x-diagram-list>
+        </div>
+      </main>
+        <script src="script.js" type="module"></script>
+        <script src="list.js"></script>
+        <script src="diagram-list.js"></script>
+        <script src="pie-chart.js"></script>
+    </body>
 </html>
