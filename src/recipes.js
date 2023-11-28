@@ -3,38 +3,65 @@ import { Ingredient } from "./ingredients.js";
 export class Recipe {
   static recipes = {}
 
-  constructor(name, displayName) {
-      this.id = name;
-      this.name = displayName
-      this.ingredients = {};
-      Recipe.recipes[name] = this;
+  static fromObject(obj) {
+    const r = new Recipe(obj.id, obj.name);
+    Object.keys(obj.ingredients).forEach(key => {
+      let value = obj.ingredients[key];
+      r.ingredients[key] = value;
+    })
+    return r;
+  }
+
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+    this.ingredients = {};
+    Recipe.recipes[id] = this;
   }
 
   getLipides() {
-      qte_lipides = 0;
-      Object.keys(this.ingredients).forEach(key => {
-        let value = this.ingredients[key];
-        qte_lipides += key._gfat_kg*(value/1000);
-      })
-      return qte_lipides;
+    qte_lipides = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      qte_lipides += key._gfat_kg*(value/1000);
+    })
+    return qte_lipides;
   }
 
   getGlucides() {
-      qte_glucides = 0;
-      Object.keys(this.ingredients).forEach(key => {
-        let value = this.ingredients[key];
-          qte_glucides += key._gcarb_kg*(value/1000);
-      })
-      return qte_glucides;
+    qte_glucides = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      qte_glucides += key._gcarb_kg*(value/1000);
+    })
+    return qte_glucides;
   }
 
   getProteines() {
-      qte_proteines = 0;
-      Object.keys(this.ingredients).forEach(key => {
-        let value = this.ingredients[key];
-          qte_proteines += key._gprot_kg*(value/1000);
-      })
-      return qte_proteines;
+    qte_proteines = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      qte_proteines += key._gprot_kg*(value/1000);
+    })
+    return qte_proteines;
+  }
+
+  getPoidsTotal() {
+    poids = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      poids += value;
+    })
+    return poids;
+  }
+
+  getApportCalorique() {
+    apport_calorique = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      apport_calorique += key.energyTotal_kg * (value/1000);
+    })
+    return apport_calorique;
   }
 }
 
