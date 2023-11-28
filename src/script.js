@@ -46,5 +46,5 @@ window.onload = async () => {
     console.log(Recipe.recipes)
     
     const mealsList = document.getElementById('meals-list')
-    mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.name)))
+    mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.displayName)))
 }
