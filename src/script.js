@@ -2,7 +2,70 @@ import { Ingredient } from "./ingredients.js"
 import { Recipe, createRecipes } from "./recipes.js";
 const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
 
+<<<<<<< HEAD
 async function getAndParseDataset(){
+=======
+function getAndParseDataset() {
+  
+}
+
+
+class Ingredient {
+    constructor(_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
+      this.name = _name;
+      this.ghg_kg = _ghg_kg;
+      this.gprot_kg = _gprot_kg
+      this.gfat_kg = _gfat_kg
+      this.gcarb_kg = _gcarb_kg
+      this.land_use_kg = _land_use_kg
+      this.water_kg = _water_kg
+    }
+} 
+
+class Recipe {
+    static recipes = {}
+
+    constructor(name) {
+        this.name = name;
+        this.ingredients = new Map(Ingredient, int);
+        Recipe.recipes[name] = this;
+    }
+
+    getLipides() {
+        qte_lipides = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_lipides += key._gfat_kg*(value/1000);
+        }
+        return qte_lipides;
+    }
+
+    getGlucides() {
+        qte_glucides = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_glucides += key._gcarb_kg*(value/1000);
+        }
+        return qte_glucides;
+    }
+
+    getProteines() {
+        qte_proteines = 0;
+        for (const [key, value] of this.ingredients) {
+            qte_proteines += key._gprot_kg*(value/1000);
+        }
+        return qte_proteines;
+    }
+
+    getPoidsTotal() {
+        poids = 0;
+        for (const [key, value] of this.ingredients) {
+            poids += value;
+        }
+        return poids;
+    }
+} 
+
+async function parseCSV(){
+>>>>>>> Fonction getter du poids total d'un plat
     let data = await fetch(DATASET_LINK);
     data = await data.text();
     data = data.split('\n')
