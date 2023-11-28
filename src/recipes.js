@@ -23,7 +23,7 @@ export class Recipe {
     qte_lipides = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_lipides += key._gfat_kg*(value/1000);
+      qte_lipides += key.gfat_kg*(value/1000);
     })
     return qte_lipides;
   }
@@ -32,7 +32,7 @@ export class Recipe {
     qte_glucides = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_glucides += key._gcarb_kg*(value/1000);
+      qte_glucides += key.gcarb_kg*(value/1000);
     })
     return qte_glucides;
   }
@@ -41,7 +41,7 @@ export class Recipe {
     qte_proteines = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_proteines += key._gprot_kg*(value/1000);
+      qte_proteines += key.gprot_kg*(value/1000);
     })
     return qte_proteines;
   }
@@ -62,6 +62,33 @@ export class Recipe {
       apport_calorique += key.energyTotal_kg * (value/1000);
     })
     return apport_calorique;
+  }
+
+  getEmissionGES() {
+    emission_GES = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      emission_GES += key.ghg_kg * (value/1000);
+    })
+    return emission_GES;
+  }
+
+  getLandUse() {
+    land_use = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      land_use += key.land_use_kg * (value/1000);
+    })
+    return land_use;
+  }
+
+  getWaterUse() {
+    water_use = 0;
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      water_use += key.water_kg * (value/1000);
+    })
+    return water_use;
   }
 }
 
