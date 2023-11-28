@@ -136,7 +136,7 @@ class ListChangedEvent extends Event {
 }
 
 class List extends HTMLElement {
-  static observedAttributes = ["items"];
+  static observedAttributes = ["items", "default"];
 
   constructor() {
     super();
@@ -254,9 +254,18 @@ class List extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "items") newValue = JSON.parse(newValue);
-    this[name] = newValue;
+    if (name === "items") {
+      newValue = JSON.parse(newValue);
+      this.items = newValue;
+    }
+    if (name === "default") {
+      newValue = newValue.split(",");
+      if (!this.selectedItems || this.selectedItems.length == 0) {
+        this.selectedItems = newValue;
+      }
+    }
     this.updateAvailableItems();
+    this.updateItems();
   }
 }
 

@@ -43,13 +43,13 @@ function getIngredientFromDatasetRow(row){
 }
 
 window.onload = async () => {
-    console.log(await getAndParseDataset());
+    await getAndParseDataset();
     createRecipes();
     
     const mealsList = document.getElementById('meals-list')
-    // mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.name)))
-    mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
+    mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
+    onSelectedMealsChanged({ data: mealsList.selectedItems });
 }
 
 function onSelectedMealsChanged(event) {
