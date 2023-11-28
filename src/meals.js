@@ -3,28 +3,32 @@ template.innerHTML = /*html*/ `
 <div id="container">
   <div id="selected-meals">
     <!-- Liste des plats sélectionnés -->
-  </div>
-  <div id="select-meal">
-    <!-- Sélection d'un nouveau plat  -->
-    <div id="select-meal-list" style="display:none;"></div>
+    <div id="select-meal">
+      <!-- Sélection d'un nouveau plat  -->
+      <div id="select-meal-list" style="display:none;"></div>
+    </div>
   </div>
 </div>
 <style>
+  #container {
+    padding: 2rem;
+  }
+
   #container,
   #selected-meals {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
-    min-height: 120px;
-    gap: 2rem;
+    gap: 0.6rem;
   }
 
   #select-meal {
-    width: 50px;
-    height: 50px;
+    width: 32px;
+    height: 32px;
     display: block;
-    background-color: var(--background);
-    border-radius: 0.2rem;
+    background-color: #fff;
+    border-radius: 16px;
     position: relative;
     cursor: pointer;
   }
@@ -42,11 +46,11 @@ template.innerHTML = /*html*/ `
 
   #select-meal::before {
     height: 60%;
-    width: 4px;
+    width: 2px;
   }
 
   #select-meal::after {
-    height: 4px;
+    height: 2px;
     width: 60%;
   }
 
@@ -73,31 +77,32 @@ template.innerHTML = /*html*/ `
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: var(--background);
+    background-color: #fff;
     position: relative;
-    width: 100px;
-    height: 100px;
+    padding: 0 calc(8px + 20px + 8px) 0 8px;
+    height: 32px;
+    border-radius: 16px;
   }
 
   .delete-meal {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 0;
-    right: 0;
-    transform: rotate(45deg) translate(0%, -50%);
-    background-color: #fff;
+    top: 50%;
+    right: 8px;
+    transform: translate(0%, -50%) rotate(45deg);
+    background-color: #222;
     border-radius: 1000px;
     cursor: pointer;
   }
 
   .delete-meal::before {
     height: 70%;
-    width: 1px;
+    width: 2px;
   }
 
   .delete-meal::after {
-    height: 1px;
+    height: 2px;
     width: 70%;
   }
 
@@ -110,7 +115,7 @@ template.innerHTML = /*html*/ `
     position: absolute;
     content: '';
     display: block;
-    background-color: black;
+    background-color: #fff;
   }
 </style>
 `;
@@ -204,7 +209,10 @@ class Meal extends HTMLElement {
   updateMeals() {
     const meals = this.selectedMeals;
     const list = this.shadowRoot.getElementById("selected-meals");
-    list.innerHTML = "";
+    const children = list.querySelectorAll('.meal');
+    children.forEach(child => list.removeChild(child))
+    const lastChild = list.querySelector("#select-meal")
+
     meals.forEach((meal) => {
       const elem = document.createElement("span");
       elem.classList.add("meal");
@@ -213,7 +221,7 @@ class Meal extends HTMLElement {
       cross.onclick = () => this.removeMeal(meal);
       elem.innerText = meal;
       elem.appendChild(cross);
-      list.appendChild(elem);
+      list.insertBefore(elem, lastChild);
     });
   }
 

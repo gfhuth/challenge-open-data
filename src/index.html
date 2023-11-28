@@ -10,7 +10,7 @@
         <div id="bar-diagram">
           <!-- Diagramme en barre -->
         </div>
-        <x-meals id="testmeal" meals='["plat1", "plat2"]' onmealschanged="onMealsChanged"></x-meals>
+        <x-meals id="meals-list" meals='["plat1", "plat2"]' onmealschanged="onMealsChanged"></x-meals>
         <div id="pie-diagram">
           <!-- Diagramme camembert des plats sélectionnés -->
         </div>
@@ -44,7 +44,7 @@
                     <span class="rond"></span></div
             ></span>
         </div>
-        <script src="script.js"></script>
+        <script src="script.js" type="module"></script>
         <script src="meals.js"></script>
     </body>
 </html>
