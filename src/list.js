@@ -3,8 +3,8 @@ templateList.innerHTML = /*html*/ `
 <div id="container">
   <div id="selected-items">
     <!-- Liste des plats sélectionnés -->
+    <!-- Sélection d'un nouveau plat  -->
     <div id="select-item">
-      <!-- Sélection d'un nouveau plat  -->
       <div id="select-item-list" style="display:none;"></div>
     </div>
   </div>
@@ -165,20 +165,39 @@ class List extends HTMLElement {
 
   selectItem(event) {
     event.stopPropagation();
-    this.selectionInProgress = !this.selectionInProgress;
-    if (!this.showOrHide()) return;
 
+    const list = this.shadowRoot.getElementById("select-item-list");
+    this.selectionInProgress = !this.selectionInProgress;
+    if (!this.showOrHide()) {
+      list.style.left = 0;
+      list.style.bottom = 0;
+      return;
+    }
+
+    // Update list position
+    const rect = list.getBoundingClientRect();
+    const distanceWidth = parseInt(
+      Math.floor((window.innerWidth - 20) - (rect.x + rect.width))
+    );
+    if (distanceWidth < 0) {
+      list.style.left = `${distanceWidth * 1.05}px`;
+    }
+    const distanceHeight = parseInt(Math.floor(window.innerHeight - (rect.y + rect.height)));
+    if (distanceHeight < 0) {
+      list.style.bottom = `${-distanceHeight * 1.05}px`;
+    }
+  }
+  updateAvailableItems() {
     const items = this.items;
     const list = this.shadowRoot.getElementById("select-item-list");
     list.innerHTML = "";
-    items
-      .filter((item) => this.selectedItems.indexOf(item.id) < 0).forEach((item) => {
-        const elem = document.createElement("span");
-        elem.classList.add("dropdown-item");
-        elem.innerHTML = item.name;
-        elem.onclick = () => this.addItem(item.id);
-        list.appendChild(elem);
-      });
+    items.filter((item) => this.selectedItems.indexOf(item.id) < 0).forEach((item) => {
+      const elem = document.createElement("span");
+      elem.classList.add("dropdown-item");
+      elem.innerHTML = item.name;
+      elem.onclick = () => this.addItem(item.id);
+      list.appendChild(elem);
+    });
 
     const createItem = document.createElement("span");
     createItem.classList.add("dropdown-item");
@@ -197,6 +216,7 @@ class List extends HTMLElement {
     if (this.selectedItems.indexOf(itemId) >= 0) return;
     this.selectedItems.push(itemId);
     this.updateItems();
+    this.updateAvailableItems();
     this.notify();
   }
 
@@ -204,17 +224,18 @@ class List extends HTMLElement {
     if (this.selectedItems.indexOf(itemId) < 0) return;
     this.selectedItems.splice(this.selectedItems.indexOf(itemId), 1);
     this.updateItems();
+    this.updateAvailableItems();
     this.notify();
   }
   updateItems() {
     const items = this.selectedItems;
     const list = this.shadowRoot.getElementById("selected-items");
-    const children = list.querySelectorAll('.chip-item');
-    children.forEach(child => list.removeChild(child))
-    const lastChild = list.querySelector("#select-item")
+    const children = list.querySelectorAll(".chip-item");
+    children.forEach((child) => list.removeChild(child));
+    const lastChild = list.querySelector("#select-item");
 
     items.forEach((itemId) => {
-      const item = this.items.find(item => item.id === itemId);
+      const item = this.items.find((item) => item.id === itemId);
       if (!item) return;
 
       const elem = document.createElement("span");
@@ -231,6 +252,7 @@ class List extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "items") newValue = JSON.parse(newValue);
     this[name] = newValue;
+    this.updateAvailableItems();
   }
 }
 
