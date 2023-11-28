@@ -2,8 +2,8 @@ const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/maste
 
 
 class Ingredient {
-    constructor(_ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
-    //   this.name = _name;
+    constructor(_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
+      this.name = _name;
       this.ghg_kg = _ghg_kg;
       this.gprot_kg = _gprot_kg
       this.gfat_kg = _gfat_kg
@@ -12,18 +12,18 @@ class Ingredient {
       this.water_kg = _water_kg
     }
 
-    get EnergyTotal_kg(){
+    get energyTotal_kg(){
         return  this.EnergyProt_kg + 
                 this.EnergyFat_kg +
                 this.EnergyCarb_kg
     }
-    get EnergyProt_kg(){
+    get energyProt_kg(){
         return this.gprot_kg*4
     }
-    get EnergyFat_kg(){
+    get energyFat_kg(){
         return this.gprot_kg*9
     }
-    get EnergyCarb_kg(){
+    get energyCarb_kg(){
         return this.gcarb_kg*4
     }
 } 
@@ -65,6 +65,7 @@ function parse_rows2Ingredient(row){
         const obj_land_use_kg = parseFloat(values[6])
         const obj_water_kg = parseFloat(values[18])
         const obj = new Ingredient(
+            obj_name,
             obj_ghg_kg,
             obj_gprot_kg,
             obj_gfat_kg,
