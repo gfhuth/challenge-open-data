@@ -13,9 +13,9 @@ class Ingredient {
     }
 
     get energyTotal_kg(){
-        return  this.EnergyProt_kg + 
-                this.EnergyFat_kg +
-                this.EnergyCarb_kg
+        return  this.energyProt_kg + 
+                this.energyFat_kg +
+                this.energyCarb_kg
     }
     get energyProt_kg(){
         return this.gprot_kg*4
