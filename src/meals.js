@@ -1,5 +1,5 @@
-const template = document.createElement("template");
-template.innerHTML = /*html*/ `
+const templateMeals = document.createElement("template");
+templateMeals.innerHTML = /*html*/ `
 <div id="container">
   <div id="selected-meals">
     <!-- Liste des plats sélectionnés -->
@@ -132,14 +132,14 @@ class MealsChangedEvent extends Event {
 }
 
 class Meal extends HTMLElement {
-  static observedAttributes = ["meals", "onmealschanged"];
+  static observedAttributes = ["meals"];
 
   constructor() {
     super();
     this.attachShadow({
       mode: "open",
     });
-    this.shadowRoot.append(template.content.cloneNode(true));
+    this.shadowRoot.append(templateMeals.content.cloneNode(true));
 
     this.meals = [];
     this.selectedMeals = [];
@@ -228,11 +228,6 @@ class Meal extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "meals") newValue = JSON.parse(newValue);
     this[name] = newValue;
-    if (name === "onmealschanged") {
-      if (window[newValue] && typeof window[newValue] === 'function') {
-        this.addEventListener("mealschanged", window[newValue]);
-      }
-    }
   }
 }
 

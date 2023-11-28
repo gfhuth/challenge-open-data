@@ -43,8 +43,16 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
-    console.log(Recipe.recipes)
     
     const mealsList = document.getElementById('meals-list')
     mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.name)))
+    mealsList.addEventListener('mealschanged', onSelectedMealsChanged)
+}
+
+function onSelectedMealsChanged(event) {
+    const meals = event.data;
+    const data = meals.map(meal => Recipe.recipes[meal])
+    const pieCharts = document.getElementById('pie-charts');
+    
+    pieCharts.setAttribute('data', JSON.stringify(data))
 }
