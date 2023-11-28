@@ -11,25 +11,28 @@ export class Recipe {
 
   getLipides() {
       qte_lipides = 0;
-      for (const [key, value] of this.ingredients) {
-          qte_lipides += key._gfat_kg*(value/1000);
-      }
+      Object.keys(this.ingredients).forEach(key => {
+        let value = this.ingredients[key];
+        qte_lipides += key._gfat_kg*(value/1000);
+      })
       return qte_lipides;
   }
 
   getGlucides() {
       qte_glucides = 0;
-      for (const [key, value] of this.ingredients) {
+      Object.keys(this.ingredients).forEach(key => {
+        let value = this.ingredients[key];
           qte_glucides += key._gcarb_kg*(value/1000);
-      }
+      })
       return qte_glucides;
   }
 
   getProteines() {
       qte_proteines = 0;
-      for (const [key, value] of this.ingredients) {
+      Object.keys(this.ingredients).forEach(key => {
+        let value = this.ingredients[key];
           qte_proteines += key._gprot_kg*(value/1000);
-      }
+      })
       return qte_proteines;
   }
 }
@@ -65,7 +68,7 @@ export function createRecipes() {
   /* Gratin dauphinois */
   const gratin_dauphinois = new Recipe("gratin_dauphinois");
   gratin_dauphinois.ingredients["potatoes"] = 250;
-  gratin_dauphinois.ingredients["cow's_milk"] = 183; //vérifier les noms des ingrédients !!!
+  gratin_dauphinois.ingredients["cow_s_milk"] = 183;
   gratin_dauphinois.ingredients["butter"] = 17;
   gratin_dauphinois.ingredients["sunflower_oil"] = 100;
   
@@ -114,7 +117,7 @@ export function createRecipes() {
   spaghetti_carbonara.ingredients["eggs"] = 5;
   spaghetti_carbonara.ingredients["bacon"] = 40;
   spaghetti_carbonara.ingredients["parmesan_cheese"] = 15;
-  spaghetti_carbonara.ingredients["cow's_milk"] = 12;
+  spaghetti_carbonara.ingredients["cow_s_milk"] = 12;
   spaghetti_carbonara.ingredients["sunflower_oil"] = 25;
   
   /* Risotto */
@@ -143,7 +146,7 @@ export function createRecipes() {
   /* Mac and cheese */
   const mac_and_cheese = new Recipe("mac_and_cheese");
   mac_and_cheese.ingredients["macaroni_cheese"] = 112;
-  mac_and_cheese.ingredients["cow's milk"] = 1;
+  mac_and_cheese.ingredients["cow_s_milk"] = 1;
   mac_and_cheese.ingredients["butter"] = 5;
 }
   
