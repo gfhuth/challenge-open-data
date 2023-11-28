@@ -99,8 +99,8 @@ export function createRecipes() {
   croissant.ingredients["croissant"] = 60;
   
   /* Pain au chocolat */
-  const pain_chocolat = new Recipe("chocolatine", "Chocolatine");
-  pain_chocolat.ingredients["chocolatine"] = 60;
+  const pain_chocolat = new Recipe("pain_au_chocolat", "Pain au chocolat");
+  pain_chocolat.ingredients["pain_au_chocolat"] = 60;
   
   /* Lasagnes bolognaise */
   const lasagnes_bolognaise = new Recipe("lasagnes_bolognaise", "Lasagne à la bolognaise");

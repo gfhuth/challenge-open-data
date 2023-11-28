@@ -63,13 +63,17 @@ templateList.innerHTML = /*html*/ `
     display: flex;
     flex-direction: column;
     border: 1px solid black;
+    background-color: white;
     z-index: 1000;
   }
 
   .dropdown-item {
     padding: 0.2rem 0.3rem;
-    background-color: white;
     white-space: nowrap;
+  }
+
+  .dropdown-item:hover {
+    background-color: #eee;
   }
 
   .chip-item {
