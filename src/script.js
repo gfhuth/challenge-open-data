@@ -21,7 +21,9 @@ function objList2oneObj(objetAccumulated, objetoCurrent){
 }
 function getIngredientFromDatasetRow(row){
         const values = row.split(',');
-        const obj_name = values[0]
+        const obj_name = values[0].replace(/\s+/g, '_').
+                    toLowerCase().
+                    replace(/'/g, '_');
         const obj_ghg_kg = parseFloat(values[2])
         const obj_gprot_kg = obj_ghg_kg*100/values[4]
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
