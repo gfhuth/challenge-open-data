@@ -11,6 +11,7 @@ async function getAndParseDataset(){
 
     data = data.map(getIngredientFromDatasetRow);
     data = data.reduce(objList2oneObj, {});
+    Ingredient.ingredients = data;
     return data
 }
 
