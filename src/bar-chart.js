@@ -20,7 +20,7 @@ class BarChart extends HTMLElement {
   }
   
   render() {
-    origin = this.shadowRoot.getElementById("bar-chart")
+    const origin = this.shadowRoot.getElementById("bar-chart")
     createBarChart(datas, origin)
   }
   

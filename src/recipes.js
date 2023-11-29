@@ -20,10 +20,11 @@ export class Recipe {
   }
 
   getLipides() {
-    qte_lipides = 0;
+    const qte_lipides = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_lipides += key.gfat_kg*(value/1000);
+      const ing = Ingredient.ingredients[key];
+      qte_lipides += ing.gfat_kg*(value/1000);
     })
     return qte_lipides;
   }
@@ -56,39 +57,86 @@ export class Recipe {
   }
 
   getApportCalorique() {
-    apport_calorique = 0;
+    const dico = {};
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      apport_calorique += key.energyTotal_kg * (value/1000);
+      const ing = Ingredient.ingredients[key];
+      console.log(Ingredient.ingredients)
+      dico[ing.name] = ing.energyTotal_kg * (value/1000);
     })
-    return apport_calorique;
+    return dico;
   }
 
   getEmissionGES() {
-    emission_GES = 0;
+    const dico = {};
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      emission_GES += key.ghg_kg * (value/1000);
+      const ing = Ingredient.ingredients[key];
+      dico[ing.name] = ing.ghg_kg * (value/1000);
     })
-    return emission_GES;
+    return dico;
   }
 
   getLandUse() {
-    land_use = 0;
+    const dico = {};
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      land_use += key.land_use_kg * (value/1000);
+      const ing = Ingredient.ingredients[key];
+      dico[ing.name] = ing.land_use_kg * (value/1000);
     })
-    return land_use;
+    return dico;
   }
 
   getWaterUse() {
-    water_use = 0;
+    const dico = {};
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      water_use += key.water_kg * (value/1000);
+      const ing = Ingredient.ingredients[key];
+      dico[ing.name] = ing.water_kg * (value/1000);
     })
-    return water_use;
+    return dico;
+  }
+
+  getObjectBarChart(type1, type2){
+    const obj = {
+      Plate : this.name
+    }
+    switch(type1){
+      case 'cal':
+        obj.type1 = this.getApportCalorique();
+        break;
+      case 'ges':
+        obj.type1 = this.getEmissionGES();
+        break;
+      case 'land':
+        obj.type1 = this.getLandUse();
+        break;
+      case 'water':
+        obj.type1 = this.getWaterUse();
+        break;
+      default:
+        console.log("oupsi y a un souci dans le type1")
+        break;
+    }
+    switch(type2){
+      case 'cal':
+        obj.type2 = this.getApportCalorique();
+        break;
+      case 'ges':
+        obj.type2 = this.getEmissionGES();
+        break;
+      case 'land':
+        obj.type2 = this.getLandUse();
+        break;
+      case 'water':
+        obj.type2 = this.getWaterUse();
+        break;
+      default:
+        console.log("oupsi y a un souci dans le type2")
+        break;
+    }
+    return obj
+    
   }
 }
 

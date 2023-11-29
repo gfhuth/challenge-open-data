@@ -11,6 +11,7 @@ async function getAndParseDataset(){
 
     data = data.map(getIngredientFromDatasetRow);
     data = data.reduce(objList2oneObj, {});
+    Ingredient.ingredients = data
     return data
 }
 
@@ -45,7 +46,7 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
-    
+    console.log(Recipe.recipes["gratin_dauphinois"].getObjectBarChart("cal", "ges"))
     const mealsList = document.getElementById('meals-list')
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
