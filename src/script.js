@@ -34,9 +34,9 @@ function getIngredientFromDatasetRow(row){
         const obj = new Ingredient(
             obj_name,
             obj_ghg_kg,
-            obj_gprot_kg,
-            obj_gfat_kg,
-            obj_kcalcarb_kg/4,
+            isFinite(obj_gprot_kg) ? obj_gprot_kg : 0.0,
+            isFinite(obj_gfat_kg) ? obj_gfat_kg : 0.0,
+            isFinite(obj_kcalcarb_kg/4) ? obj_kcalcarb_kg/4 : 0.0,
             obj_land_use_kg,
             obj_water_kg
         );
