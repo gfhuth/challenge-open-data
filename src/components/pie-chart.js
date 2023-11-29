@@ -1,4 +1,4 @@
-import { camebert_chart } from "./diagrams/camembert-chart.js";
+import { camebert_chart } from "../charts/pie-chart.js";
 
 const templatePieChart = document.createElement("template");
 templatePieChart.innerHTML = /*html*/ `

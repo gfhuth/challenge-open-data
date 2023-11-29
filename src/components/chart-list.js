@@ -55,4 +55,4 @@ class DiagramList extends HTMLElement {
   }
 }
 
-customElements.define("x-diagram-list", DiagramList);
+customElements.define("x-chart-list", DiagramList);
