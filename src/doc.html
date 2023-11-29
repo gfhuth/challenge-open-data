@@ -22,9 +22,9 @@
           <p>Ce set de données indique, pour une liste étendue d'ingrédients, leurs impacts environnementaux (eau requise, espace nécessaire, quantité de gaz à effet de serre émise) ramené au poids, nombre de calories ou de protéines.</p>
           <p>Le but est alors d'évaluer, selon ces critères, l'impact de plats typiquement français. On peut notamment prendre comme exemple les plats suivants, composés d'ingrédients simples :</p>
           <ul>
-              <li>Ratatouille : courgette, sauce tomate, aubergine</li>
-              <li>Gratin dauphinois : patates, crème</li>
-              <li>Boeuf bourguignon : boeuf, vin, carottes, patate.</li>
+              <li>Poulet basquaise : poulet, tomates, poivrons, oignons, huile d'olive</li>
+              <li>Gratin dauphinois : patates, crème, lait</li>
+              <li>Boeuf bourguignon : boeuf, vin, carottes, oignons.</li>
           </ul>
           <p>De plus, pour chaque plat, on cherche à mettre en valeur la quantité de glucides, lipides et protéines pour chaque ingrédient.</p>
           <p>On notera que ces données proviennent du Royaume-Uni. On peut donc supposer que cela faussera nos résultats puisque la majorité des produits peuvent provenir de France. Cependant, on peut ajouter deux suppositions plausibles pour contrer ces inquiétudes.</p>
@@ -44,6 +44,18 @@
           <p>Cette approche nous permet de nous concentrer sur les graphiques et les données affichées, sans avoir trop de fichiers à gérer, ce qui pourrait être le cas si nous utilisons un framework comme React ou Vue. En n'incluant pas ces framework, nous pouvons être plus sereins quant à la taille finale du rendu, ce dernier étant limité à 10 Mo.</p>
           <p>Afin d'éviter la redondance de code et d'avoir un code propre et factorisé, nous avons utilisés les <code>web components</code>. Cela a également facilité la répartition des tâches.</p>
           <p>Les données seront directement récupérées à leur source, aucune copie ne sera faite sur le serveur d'hébergement de notre page web.</p>
+
+          <h2>Démarche de code</h2>
+
+            <h3>Parseur de données</h3>
+
+            <h3>Classes ingrédient et recette</h3>
+            <p>La classe Ingredient regroupe le nom de l'ingrédient, la quantité d'émission de GES (en g/kg), la quantité de protéines, de lipides et de glucides (en g/kg), ainsi que l'utilisation des sols (en m²/kg) et de l'eau (en L/kg) de celui-ci. Nous avons ensuite implémenté une fonction permettant de récupérer l'apport calorique total d'un ingrédient, en se basant sur l'approximation suivante : 4g protéines + 9g lipides + 4g glucides = 1kCal.</p>
+            <p>Nous avons ensuite créé une classe Recipe, qui a pour attributs un identifiant, un nom, et une dictionnaire contenant le nom de ses ingrédients, et la quantité de ceux-ci à l'intérieur du plat, en grammes. Nous avons alors initialisé plusieurs plats typiques, en ramenant la quantité des ingrédients à une personne.</p>
+            <p>Pour récupérer les données nécessaires aux graphes, nous avons implémenté des fonctions qui permettent de calculer la quantité de protéines, lipides et glucides pour chaque plat, en parcourant la liste de ses ingrédients, ainsi qu'une fonction retournant l'apport calorique total de ce dernier. Nous avons aussi ajouté des fonctions permettant de récupérer la quantité d'émission de GES, la quantité d'utilisation des sols et de l'eau de chaque plat.</p>
+            <h3>Affichage de graphes</h3>
+
+            <h3>Construction de la page web</h3>
         </div>
         <script src="header.js" type="module"></script>
       </main>
