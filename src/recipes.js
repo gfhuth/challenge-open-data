@@ -61,6 +61,7 @@ export class Recipe {
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
       const ing = Ingredient.ingredients[key];
+      console.log(Ingredient.ingredients)
       dico[ing.name] = ing.energyTotal_kg * (value/1000);
     })
     return dico;
