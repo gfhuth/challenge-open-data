@@ -1,7 +1,4 @@
-import {
-  createBarChart,
-  datas
-} from "./diagrams/bar-chart.js";
+import { createBarChart } from "./diagrams/bar-chart.js";
 
 const templateBarChart = document.createElement("template");
 templateBarChart.innerHTML = /*html*/ `
@@ -100,7 +97,11 @@ class BarChart extends HTMLElement {
     selectedItem_2.setAttribute("selected", true);
 
     // createBarChart(this.data, this.features.map(f => this.allFeatures.find(fe => fe.id === f)), targetElement);
-    createBarChart(this.data, this.allFeatures.filter(feature => this.features.includes(feature.id)), targetElement);
+    createBarChart(
+      this.data,
+      this.allFeatures.filter((feature) => this.features.includes(feature.id)),
+      targetElement
+    );
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

@@ -159,11 +159,9 @@ class List extends HTMLElement {
 
   showOrHide() {
     if (!this.selectionInProgress) {
-      this.shadowRoot.getElementById("select-item-list").style.display =
-        "none";
+      this.shadowRoot.getElementById("select-item-list").style.display = "none";
     } else {
-      this.shadowRoot.getElementById("select-item-list").style.display =
-        "";
+      this.shadowRoot.getElementById("select-item-list").style.display = "";
     }
     return this.selectionInProgress;
   }
@@ -182,12 +180,14 @@ class List extends HTMLElement {
     // Update list position
     const rect = list.getBoundingClientRect();
     const distanceWidth = parseInt(
-      Math.floor((window.innerWidth - 20) - (rect.x + rect.width))
+      Math.floor(window.innerWidth - 20 - (rect.x + rect.width))
     );
     if (distanceWidth < 0) {
       list.style.left = `${distanceWidth * 1.05}px`;
     }
-    const distanceHeight = parseInt(Math.floor(window.innerHeight - (rect.y + rect.height)));
+    const distanceHeight = parseInt(
+      Math.floor(window.innerHeight - (rect.y + rect.height))
+    );
     if (distanceHeight < 0) {
       list.style.bottom = `${-distanceHeight * 1.05}px`;
     }
@@ -196,13 +196,15 @@ class List extends HTMLElement {
     const items = this.items;
     const list = this.shadowRoot.getElementById("select-item-list");
     list.innerHTML = "";
-    items.filter((item) => this.selectedItems.indexOf(item.id) < 0).forEach((item) => {
-      const elem = document.createElement("span");
-      elem.classList.add("dropdown-item");
-      elem.innerHTML = item.name;
-      elem.onclick = () => this.addItem(item.id);
-      list.appendChild(elem);
-    });
+    items
+      .filter((item) => this.selectedItems.indexOf(item.id) < 0)
+      .forEach((item) => {
+        const elem = document.createElement("span");
+        elem.classList.add("dropdown-item");
+        elem.innerHTML = item.name;
+        elem.onclick = () => this.addItem(item.id);
+        list.appendChild(elem);
+      });
   }
 
   notify() {

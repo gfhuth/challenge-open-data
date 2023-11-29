@@ -40,11 +40,9 @@ templateHeader.innerHTML = /*html*/ `
     }
 }
 </style>
-`
+`;
 
 class Header extends HTMLElement {
-
-
   constructor() {
     super();
     this.attachShadow({
