@@ -22,7 +22,7 @@ templateHeader.innerHTML = /*html*/ `
     text-decoration: none;
     color: black;
     height: 100%;
-    width: 30%;
+    width: 40%;
     justify-content: center;
     align-items: center;
   }
@@ -30,6 +30,12 @@ templateHeader.innerHTML = /*html*/ `
   #menu a:hover {
     background-color: #ffffff40;
   }
+  
+  @media screen and (max-width: 800px) {
+    #menu a {
+      width: 50%;
+    }
+}
 </style>
 `
 
