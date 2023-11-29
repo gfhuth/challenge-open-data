@@ -1,7 +1,9 @@
 import { Ingredient } from "./ingredients.js"
 import { Recipe, createRecipes } from "./recipes.js";
 import { camebert_chart } from "./diagrams/camembert-chart.js";
+import { scatter_plot } from "./diagrams/scatter-plot.js"
 const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
+
 
 async function getAndParseDataset(){
     let data = await fetch(DATASET_LINK);
@@ -57,6 +59,7 @@ window.onload = async () => {
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
     onSelectedMealsChanged({ data: mealsList.selectedItems });
+    document.getElementById('scatter-plot').appendChild(scatter_plot(Ingredient.ingredients, "gprot_kg", "ghg_kg"));
     // console.log(Recipe.recipes["risotto"].getNutritionHierarchy())
     // document.getElementById('camembert_chart')
     //     .appendChild(
