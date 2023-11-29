@@ -3,10 +3,10 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 //TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient) => formatb cf valeur de data
 function createBarChart(data, features, targetElement) {
     // ---------- Constants ----------
-    const margin = { top: 10, right: 30, bottom: 20, left: 50 },
-        width = 460 - margin.left - margin.right, //TODO : size them dynamically
+    const margin = { top: 0, right: 30, bottom: 30, left: 30 },
+        width = targetElement.getBoundingClientRect().width - margin.left - margin.right, //TODO : size them dynamically
         height = 400 - margin.top - margin.bottom,
-        padding = 40;
+        padding = 0;
     // ---------- Append the svg object to the body of the page ----------
     const svg = d3
         .select(targetElement)
