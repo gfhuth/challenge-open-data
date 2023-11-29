@@ -13,11 +13,11 @@ export function scatter_plot(ingredients ,xAtt, yAtt){
     ingredients = Object.values(ingredients)
     // Prepare the scales for positional encoding.
     const x = d3.scaleLinear()
-        .domain(d3.extent(ingredients, d => d[yAtt])).nice()
+        .domain(d3.extent(ingredients, d => d[xAtt])).nice()
         .range([marginLeft, width - marginRight]);
 
     const y = d3.scaleLinear()
-        .domain(d3.extent(ingredients, d => d[xAtt])).nice()
+        .domain(d3.extent(ingredients, d => d[yAtt])).nice()
         .range([height - marginBottom, marginTop]);
 
     // Create the SVG container.
@@ -77,8 +77,8 @@ export function scatter_plot(ingredients ,xAtt, yAtt){
         .selectAll("circle")
         .data(ingredients)
         .join("circle")
-        .attr("cx", d => x(d[yAtt]))
-        .attr("cy", d => y(d[xAtt]))
+        .attr("cx", d => x(d[xAtt]))
+        .attr("cy", d => y(d[yAtt]))
         .attr("r", 3);
 
     // Add a layer of labels.
@@ -89,8 +89,8 @@ export function scatter_plot(ingredients ,xAtt, yAtt){
         .data(ingredients)
         .join("text")
         .attr("dy", "0.35em")
-        .attr("x", d => x(d[yAtt]) + 7)
-        .attr("y", d => y(d[xAtt]))
+        .attr("x", d => x(d[xAtt]) + 7)
+        .attr("y", d => y(d[yAtt]))
         .text(d => d.name);
     return svg.node();
 }
