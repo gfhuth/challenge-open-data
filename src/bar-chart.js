@@ -26,27 +26,27 @@ class BarChart extends HTMLElement {
       "items",
       JSON.stringify([{
           id: "apportCalorique",
-          name: "Apport calorique"
+          name: "Apport calorique",
         },
         {
           id: "emissionGES",
-          name: "Emissions de GES"
+          name: "Emissions de GES",
         },
         {
           id: "landUse",
-          name: "Utilisation du sol"
+          name: "Utilisation du sol",
         },
         {
           id: "waterUse",
-          name: "Utilisation de l'eau"
+          name: "Utilisation de l'eau",
         },
       ])
     );
-    list.setAttribute('default', 'apportCalorique,emissionGES');
-    list.addEventListener('listitemschanged', (event) => {
+    list.setAttribute("default", "apportCalorique,emissionGES");
+    list.addEventListener("listitemschanged", (event) => {
       this.features = event.data;
       this.render();
-    })
+    });
     container.appendChild(list);
     this.features = list.selectedItems || [];
     this.render();
@@ -59,9 +59,11 @@ class BarChart extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "data") newValue = JSON.parse(newValue);
-    this[name] = newValue;
-    this.render();
+    if (name === "data") {
+      newValue = JSON.parse(newValue);
+      this.data = newValue;
+      this.render();
+    }
   }
 }
 

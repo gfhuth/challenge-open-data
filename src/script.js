@@ -52,14 +52,14 @@ window.onload = async () => {
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
     onSelectedMealsChanged({ data: mealsList.selectedItems });
-    console.log(Recipe.recipes["risotto"].getNutritionHierarchy())
-    document.getElementById('camembert_chart')
-        .appendChild(
-            camebert_chart(
-                Recipe.recipes["risotto"].getNutritionHierarchy()
-            )
-        )
-        console.log(JSON.stringify(Recipe.recipes["risotto"].getNutritionHierarchy()));
+    // console.log(Recipe.recipes["risotto"].getNutritionHierarchy())
+    // document.getElementById('camembert_chart')
+    //     .appendChild(
+    //         camebert_chart(
+    //             Recipe.recipes["risotto"].getNutritionHierarchy()
+    //         )
+    //     )
+    //     console.log(JSON.stringify(Recipe.recipes["risotto"].getNutritionHierarchy()));
 
 }
 
@@ -68,7 +68,7 @@ function onSelectedMealsChanged(event) {
     const recipes = meals.map(meal => Recipe.recipes[meal])
     const pieCharts = document.getElementById('pie-charts');
     const barChart = document.getElementById('bar-chart');
-    
-    pieCharts.setAttribute('data', JSON.stringify(recipes));
+
+    pieCharts.setAttribute('data', JSON.stringify(recipes.map(r => r.getNutritionHierarchy())));
     barChart.setAttribute('data', JSON.stringify(recipes.map(r => r.formatForBarChart())))
 }

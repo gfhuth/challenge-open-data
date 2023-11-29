@@ -8,23 +8,16 @@
     </head>
     <body>
       <main>
-        <div id="charts">
-          <div id="camembert_chart"></div>
-          <div id="bar-chart">
-            <!-- Diagramme en barre -->
-            <x-bar-chart></x-bar-chart>
-          </div>
-        </div>
+        <!-- Diagramme en barre -->
+        <x-bar-chart id="bar-chart"></x-bar-chart>
         <x-list id="meals-list" default="cassoulet,pain_au_chocolat"></x-list>
-        <div id="pie-diagram">
-          <!-- Diagramme camembert des plats sélectionnés -->
-          <x-diagram-list id="pie-charts" diagram="x-pie-chart"></x-diagram-list>
-        </div>
+        <!-- Diagramme camembert des plats sélectionnés -->
+        <x-diagram-list id="pie-charts" diagram="x-pie-chart"></x-diagram-list>
       </main>
         <script src="script.js" type="module"></script>
         <script src="list.js"></script>
         <script src="diagram-list.js"></script>
-        <script src="pie-chart.js"></script>
+        <script src="pie-chart.js" type="module"></script>
         <script src="bar-chart.js" type="module"></script>
     </body>
 </html>
