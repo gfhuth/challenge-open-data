@@ -47,6 +47,7 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
+    
     const mealsList = document.getElementById('meals-list')
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
@@ -64,7 +65,10 @@ window.onload = async () => {
 
 function onSelectedMealsChanged(event) {
     const meals = event.data;
-    const data = meals.map(meal => Recipe.recipes[meal])
+    const recipes = meals.map(meal => Recipe.recipes[meal])
     const pieCharts = document.getElementById('pie-charts');
-    pieCharts.setAttribute('data', JSON.stringify(data))
+    const barChart = document.getElementById('bar-chart');
+    
+    pieCharts.setAttribute('data', JSON.stringify(recipes));
+    barChart.setAttribute('data', JSON.stringify(recipes.map(r => r.formatForBarChart())))
 }

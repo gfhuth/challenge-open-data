@@ -56,16 +56,15 @@ export class Recipe {
         return poids;
     }
 
-    getApportCalorique() {
-        const dico = {};
-        Object.keys(this.ingredients).forEach(key => {
-            let value = this.ingredients[key];
-            const ing = Ingredient.ingredients[key];
-            console.log(Ingredient.ingredients)
-            dico[ing.name] = ing.energyTotal_kg * (value / 1000);
-        })
-        return dico;
-    }
+  getApportCalorique() {
+    const dico = {};
+    Object.keys(this.ingredients).forEach(key => {
+      let value = this.ingredients[key];
+      const ing = Ingredient.ingredients[key];
+      dico[ing.name] = ing.energyTotal_kg * (value/1000);
+    })
+    return dico;
+  }
 
     getEmissionGES() {
         const dico = {};
@@ -97,89 +96,15 @@ export class Recipe {
         return dico;
     }
 
-    getObjectBarChart(type1, type2) {
-        const obj = {
-            Plate: this.name
-        }
-        switch (type1) {
-            case 'cal':
-                obj.type1 = this.getApportCalorique();
-                break;
-            case 'ges':
-                obj.type1 = this.getEmissionGES();
-                break;
-            case 'land':
-                obj.type1 = this.getLandUse();
-                break;
-            case 'water':
-                obj.type1 = this.getWaterUse();
-                break;
-            default:
-                console.log("oupsi y a un souci dans le type1")
-                break;
-        }
-        switch (type2) {
-            case 'cal':
-                obj.type2 = this.getApportCalorique();
-                break;
-            case 'ges':
-                obj.type2 = this.getEmissionGES();
-                break;
-            case 'land':
-                obj.type2 = this.getLandUse();
-                break;
-            case 'water':
-                obj.type2 = this.getWaterUse();
-                break;
-            default:
-                console.log("oupsi y a un souci dans le type2")
-                break;
-        }
-        return obj
-
+  formatForBarChart() {
+    return {
+      Plate: this.name,
+      apportCalorique: this.getApportCalorique(),
+      emissionGES: this.getEmissionGES(),
+      landUse: this.getLandUse(),
+      waterUse: this.getWaterUse()
     }
-
-    getProtHierarchy() {
-        return Object.entries(this.ingredients).map(([name, qtt]) => ({
-            "name": name,
-            "value": Ingredient.ingredients[name].gprot_kg * qtt
-        })
-        )
-    }
-    getCarbHierarchy() {
-        return Object.entries(this.ingredients).map(([name, qtt]) => ({
-            "name": name,
-            "value": Ingredient.ingredients[name].gcarb_kg * qtt
-        })
-        )
-    }
-    getFatHierarchy() {
-        return Object.entries(this.ingredients).map(([name, qtt]) => ({
-            "name": name,
-            "value": Ingredient.ingredients[name].gfat_kg * qtt
-        })
-        )
-    }
-
-    getNutritionHierarchy() {
-        return {
-            "name": this.name,
-            "children": [
-                {
-                    "name": "protein",
-                    "children": this.getProtHierarchy()
-                },
-                {
-                    "name": "carbohydrate",
-                    "children": this.getCarbHierarchy()
-                },
-                {
-                    "name": "fat",
-                    "children": this.getFatHierarchy()
-                }
-            ]
-        }
-    }
+  }
 }
 
 export function createRecipes() {
