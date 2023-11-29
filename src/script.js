@@ -1,8 +1,7 @@
 import { Ingredient } from "./ingredients.js";
 import { Recipe, createRecipes } from "./recipes.js";
-
-const DATASET_LINK =
-  "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
+import { scatter_plot } from "./charts/scatter-chart.js"
+const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
 
 async function getAndParseDataset() {
   let data = await fetch(DATASET_LINK);
@@ -55,14 +54,14 @@ function getIngredientFromDatasetRow(row) {
 window.onload = async () => {
   await getAndParseDataset();
   createRecipes();
-
-  const mealsList = document.getElementById("meals-list");
-  mealsList.addEventListener("listitemschanged", onSelectedMealsChanged);
-  mealsList.setAttribute(
-    "items",
-    JSON.stringify(Object.values(Recipe.recipes))
-  );
+  
+  const mealsList = document.getElementById('meals-list');
+  mealsList.addEventListener('listitemschanged', onSelectedMealsChanged);
+  mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)));
   onSelectedMealsChanged({ data: mealsList.selectedItems });
+
+  const scatterChart = document.getElementById("scatter-chart");
+  scatterChart.setAttribute('data', JSON.stringify(Object.values(Ingredient.ingredients)));
 };
 
 function onSelectedMealsChanged(event) {

@@ -9,18 +9,24 @@
     </head>
     <body>
       <x-header></x-header>
+      
       <main>
         <!-- Diagramme en barre -->
         <x-bar-chart id="bar-chart"></x-bar-chart>
+        
         <x-list id="meals-list" default="cassoulet,pain_au_chocolat"></x-list>
         <!-- Diagramme camembert des plats sélectionnés -->
         <x-chart-list id="pie-charts" diagram="x-pie-chart"></x-chart-list>
+
+        <!-- Scatter plot -->
+        <x-scatter-chart id="scatter-chart"></x-scatter-chart>
       </main>
         <script src="script.js" type="module"></script>
         <script src="components/list.js"></script>
         <script src="components/chart-list.js"></script>
         <script src="components/pie-chart.js" type="module"></script>
         <script src="components/bar-chart.js" type="module"></script>
+        <script src="components/scatter-chart.js" type="module"></script>
         <script src="components/header.js" type="module"></script>
     </body>
 </html>
