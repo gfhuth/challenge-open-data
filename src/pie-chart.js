@@ -1,6 +1,4 @@
-import {
-  camebert_chart
-} from "./diagrams/camembert-chart.js"
+import { camebert_chart } from "./diagrams/camembert-chart.js";
 
 const templatePieChart = document.createElement("template");
 templatePieChart.innerHTML = /*html*/ `
@@ -40,13 +38,13 @@ class PieChart extends HTMLElement {
     this.shadowRoot.getElementById("name").innerHTML = this.data.name;
     const targetElement = this.shadowRoot.getElementById("pie-chart");
     targetElement.innerHTML = "";
-    camebert_chart(this.data, targetElement)
+    camebert_chart(this.data, targetElement);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "data") {
       newValue = JSON.parse(newValue);
-      this.data = newValue
+      this.data = newValue;
       this.render();
     }
   }

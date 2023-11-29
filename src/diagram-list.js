@@ -19,7 +19,7 @@ templateDiagramList.innerHTML = /*html*/ `
     flex-direction: column;
   }
 </style>
-`
+`;
 
 class DiagramList extends HTMLElement {
   static observedAttributes = ["data", "diagram"];
@@ -30,9 +30,9 @@ class DiagramList extends HTMLElement {
       mode: "open",
     });
     this.shadowRoot.append(templateDiagramList.content.cloneNode(true));
-    this.data = []
-    this.diagram = null
-    this.render()
+    this.data = [];
+    this.diagram = null;
+    this.render();
   }
 
   render() {
@@ -40,10 +40,10 @@ class DiagramList extends HTMLElement {
     container.innerHTML = "";
 
     if (!this.diagram) return;
-    this.data.forEach(d => {
+    this.data.forEach((d) => {
       const diagram = document.createElement(this.diagram);
-      diagram.setAttribute('data', JSON.stringify(d));
-      diagram.classList.add('diagram')
+      diagram.setAttribute("data", JSON.stringify(d));
+      diagram.classList.add("diagram");
       container.appendChild(diagram);
     });
   }
@@ -51,8 +51,8 @@ class DiagramList extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "data") newValue = JSON.parse(newValue);
     this[name] = newValue;
-    this.render()
+    this.render();
   }
 }
 
-customElements.define("x-diagram-list", DiagramList)
+customElements.define("x-diagram-list", DiagramList);

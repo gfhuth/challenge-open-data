@@ -1,6 +1,4 @@
-import {
-  createBarChart
-} from "./diagrams/bar-chart.js";
+import { createBarChart } from "./diagrams/bar-chart.js";
 
 const templateBarChart = document.createElement("template");
 templateBarChart.innerHTML = /*html*/ `
@@ -21,7 +19,8 @@ class BarChart extends HTMLElement {
     this.shadowRoot.append(templateBarChart.content.cloneNode(true));
     const container = this.shadowRoot.getElementById("container");
     const list = document.createElement("x-list");
-    this.allFeatures = [{
+    this.allFeatures = [
+      {
         id: "apportCalorique",
         name: "Apport calorique",
       },
@@ -38,10 +37,7 @@ class BarChart extends HTMLElement {
         name: "Utilisation de l'eau",
       },
     ];
-    list.setAttribute(
-      "items",
-      JSON.stringify(this.allFeatures)
-    );
+    list.setAttribute("items", JSON.stringify(this.allFeatures));
     list.setAttribute("default", "apportCalorique,emissionGES");
     list.addEventListener("listitemschanged", (event) => {
       this.features = event.data;
@@ -56,7 +52,11 @@ class BarChart extends HTMLElement {
     const targetElement = this.shadowRoot.getElementById("bar-chart");
     targetElement.innerHTML = "";
     // createBarChart(this.data, this.features.map(f => this.allFeatures.find(fe => fe.id === f)), targetElement);
-    createBarChart(this.data, this.allFeatures.filter(feature => this.features.includes(feature.id)), targetElement);
+    createBarChart(
+      this.data,
+      this.allFeatures.filter((feature) => this.features.includes(feature.id)),
+      targetElement
+    );
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
