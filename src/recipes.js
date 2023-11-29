@@ -47,15 +47,6 @@ export class Recipe {
         return qte_proteines;
     }
 
-    getPoidsTotal() {
-        let poids = 0;
-        Object.keys(this.ingredients).forEach((key) => {
-            let value = this.ingredients[key];
-            poids += value;
-        });
-        return poids;
-    }
-
     getApportCalorique() {
         const dico = {};
         Object.keys(this.ingredients).forEach((key) => {
@@ -213,7 +204,7 @@ export function createRecipes() {
 
     /* Croissant */
     const croissant = new Recipe("croissant", "Croissant");
-    croissant.ingredients["croissant"] = 60;
+    croissant.ingredients["croissants"] = 60;
 
     /* Pain au chocolat */
     const pain_chocolat = new Recipe("pain_au_chocolat", "Pain au chocolat");
