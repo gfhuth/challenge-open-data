@@ -8,13 +8,16 @@ templateHeader.innerHTML = /*html*/ `
 </header>
 <style>
   #menu {
+    position: fixed;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #83818199;
-    margin-top: 0;
+    background-color: #aaaaaaff;
     height: 100px;
+    width: 100vw;
+    opacity: 1;
+    box-shadow: 2px 2px 5px 1px rgba(0,0,0,.8);
   }
 
   #menu a {
