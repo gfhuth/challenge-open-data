@@ -1,6 +1,5 @@
 import {
-  createBarChart,
-  datas
+  createBarChart
 } from "./diagrams/bar-chart.js";
 
 const templateBarChart = document.createElement("template");
