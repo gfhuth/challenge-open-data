@@ -1,5 +1,6 @@
 import { Ingredient } from "./ingredients.js"
 import { Recipe, createRecipes } from "./recipes.js";
+import { camebert_chart } from "./diagrams/camembert-chart.js";
 const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
 
 async function getAndParseDataset(){
@@ -51,6 +52,15 @@ window.onload = async () => {
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
     onSelectedMealsChanged({ data: mealsList.selectedItems });
+    console.log(Recipe.recipes["risotto"].getNutritionHierarchy())
+    document.getElementById('camembert_chart')
+        .appendChild(
+            camebert_chart(
+                Recipe.recipes["risotto"].getNutritionHierarchy()
+            )
+        )
+        console.log(JSON.stringify(Recipe.recipes["risotto"].getNutritionHierarchy()));
+
 }
 
 function onSelectedMealsChanged(event) {
