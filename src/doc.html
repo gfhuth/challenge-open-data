@@ -42,7 +42,7 @@
   
           <h2>Interface et interactions</h2>
           <p>Nous avons créé un dashboard qui permet de sélectionner les plats que l'on souhaite comparer.</p>
-          <p>Sur un premier graphique, on peut sélectionner les informations que l'on veut comparer entre les différents plats sélectionnés. Les informations à comparer portent sur les impacts environnementaux d'un plat. On obtient alors un <b>digramme à barres groupées et empilées</b> nous permettant de comparer les plats sur les critères sélectionnés.</p>
+          <p>Sur un premier graphique, on peut sélectionner les informations que l'on veut comparer entre les différents plats sélectionnés. Les informations à comparer portent sur les impacts environnementaux d'un plat. On obtient alors un <b>diagramme à barres groupées et empilées</b> nous permettant de comparer les plats sur les critères sélectionnés.</p>
           <p>Dans une seconde partie, pour chaque plat sélectionné, on affiche un <b>graphique en anneaux</b> indiquant la quantité de glucides, de lipides et de protéines que chaque ingrédient apporte au plat.</p>
           <p>Voici un aperçu de ce qui était initialement prévu:</p>
           <img src="assets/project-preview.png" alt="Prévisualisation" />
@@ -54,17 +54,12 @@
           <p>Afin d'éviter la redondance de code et d'avoir un code propre et factorisé, nous avons utilisés les <code>web components</code>. Cela a également facilité la répartition des tâches.</p>
           <p>Les données seront directement récupérées à leur source, aucune copie ne sera faite sur le serveur d'hébergement de notre page web.</p>
 
-          <h2>Démarche de code</h2>
+          <h2>Traitements opérés</h2>
+          <p>Après avoir été parsées, les données sont envoyés dans des instances de la classe Ingredient. Elles servent au calcul de valeurs pour chaque plat, représentant l'apport calorique (protéines, glucides, lipides), les émissions de GES, l'utilisation des sols, et l'utilisation d'eau.</p>
+          <p>Ces valeurs sont alors représentées par un diagramme à barres, ainsi qu'un graphique en anneaux.</p>
 
-            <h3>Parseur de données</h3>
-
-            <h3>Classes ingrédient et recette</h3>
-            <p>La classe Ingredient regroupe le nom de l'ingrédient, la quantité d'émission de GES (en g/kg), la quantité de protéines, de lipides et de glucides (en g/kg), ainsi que l'utilisation des sols (en m²/kg) et de l'eau (en L/kg) de celui-ci. Nous avons ensuite implémenté une fonction permettant de récupérer l'apport calorique total d'un ingrédient, en se basant sur l'approximation suivante : 4g protéines + 9g lipides + 4g glucides = 1kCal.</p>
-            <p>Nous avons ensuite créé une classe Recipe, qui a pour attributs un identifiant, un nom, et une dictionnaire contenant le nom de ses ingrédients, et la quantité de ceux-ci à l'intérieur du plat, en grammes. Nous avons alors initialisé plusieurs plats typiques, en ramenant la quantité des ingrédients à une personne.</p>
-            <p>Pour récupérer les données nécessaires aux graphes, nous avons implémenté des fonctions qui permettent de calculer la quantité de protéines, lipides et glucides pour chaque plat, en parcourant la liste de ses ingrédients, ainsi qu'une fonction retournant l'apport calorique total de ce dernier. Nous avons aussi ajouté des fonctions permettant de récupérer la quantité d'émission de GES, la quantité d'utilisation des sols et de l'eau de chaque plat.</p>
-            <h3>Affichage de graphes</h3>
-
-            <h3>Construction de la page web</h3>
+          <h2>Analyse Green IT</h2>
+          <img id="green-it-report" src="assets/green-it-report.png" alt="Green IT report" />
         </div>
         <script src="components/header.js" type="module"></script>
       </main>

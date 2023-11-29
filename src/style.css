@@ -25,6 +25,10 @@ main {
     padding: 5px;
 }
 
+#doc #green-it-report {
+    max-width: 50vw;
+}
+
 @media screen and (max-width: 800px) {
     #doc img {
         margin-left: 0;

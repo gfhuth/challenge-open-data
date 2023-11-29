@@ -5,8 +5,8 @@ templateBarChart.innerHTML = /*html*/ `
 <div id="container">
   <div id="bar-chart"></div>
   <div id="select-container">
-  <select id="feature-1"></select>
-  <select id="feature-2"></select>
+    <select id="feature-1"></select>
+    <select id="feature-2"></select>
   </div>
 </div>
 <style>
