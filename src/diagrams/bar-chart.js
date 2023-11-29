@@ -24,13 +24,13 @@ function createBarChart(data, features, targetElement) {
             .keys(() => {
                 var ingredients = []; //list of keys
                 Object.entries(data).forEach(([typeName, typeIngr]) => {
-                    Object.keys(typeIngr[feature]).forEach((ingr, value) => {
+                    Object.keys(typeIngr[feature.id]).forEach((ingr, value) => {
                         if (!ingredients.includes(ingr)) ingredients.push(ingr); //add to list (no duplicata!!!)
                     });
                 });
                 return ingredients;
             })
-            .value((obj, key) => obj[feature][key])(data)
+            .value((obj, key) => obj[feature.id][key])(data)
     );
 
     const num_groups = datasets.length;
@@ -103,7 +103,7 @@ function createBarChart(data, features, targetElement) {
             .join("rect")
                 .attr(
                     "x",
-                    (d, i) => x(xlabels[i]) + (x.bandwidth() / num_groups) * gnum
+                    (d, i) => (x(xlabels[i]) + x.bandwidth() / 2 - (num_groups * Math.min(50, x.bandwidth() / num_groups) / 2)) + Math.min(50, x.bandwidth() / num_groups) * gnum
                 )
                 .attr("y", (d,i) => {
                     if (gnum % 2 == 0) {
@@ -112,7 +112,7 @@ function createBarChart(data, features, targetElement) {
                         return y_2(d[1]);
                     }
                 })
-                .attr("width", x.bandwidth() / num_groups)
+                .attr("width", Math.min(50, x.bandwidth() / num_groups))
                 .attr("height", (d) => {
                     if (gnum % 2 == 0) {
                         return y_1(d[0]) - y_1(d[1]) || 0;
@@ -162,7 +162,7 @@ function createBarChart(data, features, targetElement) {
         .attr("y", padding)
         .attr("dy", "1em")
         .attr("transform", "rotate(-90)")
-        .text(features[0]) ;//TODO : pretty scale name
+        .text(features[0].name) ;//TODO : pretty scale name
 
     svg.append("g")
         .attr("class", "axis y2")
@@ -174,7 +174,7 @@ function createBarChart(data, features, targetElement) {
         .attr("y", width)
         .attr("dy", "-0.5em")
         .attr("transform", "rotate(-90)")
-        .text(features[1]) ;//TODO : pretty scale name
+        .text(features[1].name) ;//TODO : pretty scale name
     
 }
 
