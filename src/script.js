@@ -11,6 +11,7 @@ async function getAndParseDataset(){
 
     data = data.map(getIngredientFromDatasetRow);
     data = data.reduce(objList2oneObj, {});
+    Ingredient.ingredients = data
     return data
 }
 
@@ -25,7 +26,7 @@ function getIngredientFromDatasetRow(row){
                     toLowerCase().
                     replace(/'/g, '_');
         const obj_ghg_kg = parseFloat(values[2])
-        const obj_gprot_kg = obj_ghg_kg*100/values[4]
+        const obj_gprot_kg = obj_ghg_kg*100/values[4] // TODO: inf-> 0
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
         const obj_kcalcarb_kg = (obj_ghg_kg*1000/values[3]) - (obj_gprot_kg*4 + obj_gfat_kg*9)
         const obj_land_use_kg = parseFloat(values[6])
@@ -33,9 +34,9 @@ function getIngredientFromDatasetRow(row){
         const obj = new Ingredient(
             obj_name,
             obj_ghg_kg,
-            obj_gprot_kg,
-            obj_gfat_kg,
-            obj_kcalcarb_kg/4,
+            isFinite(obj_gprot_kg) ? obj_gprot_kg : 0.0,
+            isFinite(obj_gfat_kg) ? obj_gfat_kg : 0.0,
+            isFinite(obj_kcalcarb_kg/4) ? obj_kcalcarb_kg/4 : 0.0,
             obj_land_use_kg,
             obj_water_kg
         );
@@ -45,7 +46,7 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
-
+    
     const mealsList = document.getElementById('meals-list')
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))

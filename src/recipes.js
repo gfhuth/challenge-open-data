@@ -1,7 +1,7 @@
 import { Ingredient } from "./ingredients.js";
 
 export class Recipe {
-  static recipes = {}
+    static recipes = {}
 
   static fromObject(obj) {
     const r = new Recipe(obj.id, obj.name);
@@ -108,8 +108,8 @@ export class Recipe {
 }
 
 export function createRecipes() {
-  /*======================== Définition des recettes ========================*/
-  const ingredients = Ingredient.ingredients;
+    /*======================== Définition des recettes ========================*/
+    const ingredients = Ingredient.ingredients;
 
   /* Cassoulet */
   const cassoulet = new Recipe("cassoulet", "Cassoulet");
@@ -219,4 +219,3 @@ export function createRecipes() {
   mac_and_cheese.ingredients["cow_s_milk"] = 1;
   mac_and_cheese.ingredients["butter"] = 5;
 }
-  
