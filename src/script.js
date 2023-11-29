@@ -11,6 +11,7 @@ async function getAndParseDataset(){
 
     data = data.map(getIngredientFromDatasetRow);
     data = data.reduce(objList2oneObj, {});
+    Ingredient.ingredients = data;
     return data
 }
 
@@ -25,7 +26,10 @@ function getIngredientFromDatasetRow(row){
                     toLowerCase().
                     replace(/'/g, '_');
         const obj_ghg_kg = parseFloat(values[2])
-        const obj_gprot_kg = obj_ghg_kg*100/values[4]
+        let obj_gprot_kg = obj_ghg_kg*100/values[4]
+        if (!Number.isFinite(obj_gprot_kg)) {
+            obj_gprot_kg = 0;
+        }
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
         const obj_kcalcarb_kg = (obj_ghg_kg*1000/values[3]) - (obj_gprot_kg*4 + obj_gfat_kg*9)
         const obj_land_use_kg = parseFloat(values[6])
@@ -45,7 +49,7 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
-    
+    console.log(Recipe.recipes["gratin_dauphinois"].getObjectBarChart("cal", "ges"))
     const mealsList = document.getElementById('meals-list')
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
