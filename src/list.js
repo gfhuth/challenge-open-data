@@ -202,15 +202,7 @@ class List extends HTMLElement {
       elem.onclick = () => this.addItem(item.id);
       list.appendChild(elem);
     });
-
-    const createItem = document.createElement("span");
-    createItem.classList.add("dropdown-item");
-    createItem.innerHTML = "Créer un plat";
-    createItem.onclick = this.createItem.bind(this);
-    list.appendChild(createItem);
   }
-
-  createItem() {}
 
   notify() {
     this.dispatchEvent(new ListChangedEvent(this.selectedItems));
