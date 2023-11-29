@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
         <title>Documentation</title>
+        <link rel="icon" href="/assets/favicon.ico" />
     </head>
     <body>
       <x-header></x-header>
@@ -19,29 +20,29 @@
           <h2>Jeu de données choisi</h2>
           <p>Nous avons donc choisi le jeu de données fourni par : <a href="https://github.com/owid/owid-datasets/blob/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv">Environmental impacts of food (Clark et al. 2022)</a></p>
           <p>Ce set de données indique, pour une liste étendue d'ingrédients, leurs impacts environnementaux (eau requise, espace nécessaire, quantité de gaz à effet de serre émise) ramené au poids, nombre de calories ou de protéines.</p>
-          <p>Le but est alors d'évaluer selon ces critères, l'impact de plats typiquement français. On peut notamment prendre comme exemple les plats suivants, composés d'ingrédients simples :</p>
+          <p>Le but est alors d'évaluer, selon ces critères, l'impact de plats typiquement français. On peut notamment prendre comme exemple les plats suivants, composés d'ingrédients simples :</p>
           <ul>
-              <li>ratatouille : courgette, sauce tomate, aubergine</li>
-              <li>gratin dauphinois : patates, crème, fromage</li>
-              <li>boeuf bourguignon : boeuf, vin, carottes, patate.</li>
+              <li>Ratatouille : courgette, sauce tomate, aubergine</li>
+              <li>Gratin dauphinois : patates, crème</li>
+              <li>Boeuf bourguignon : boeuf, vin, carottes, patate.</li>
           </ul>
-          <p>On notera que ces données proviennent du Royaume-Uni et on peut donc supposer que cela faussera nos résultats puisque la majorité des produits peuvent provenir de France.</p>
-          <p>On peut cependant on peut ajouter deux suppositions plausibles pour contrer ces inquiétudes.</p>
+          <p>De plus, pour chaque plat, on cherche à mettre en valeur la quantité de glucides, lipides et protéines pour chaque ingrédient.</p>
+          <p>On notera que ces données proviennent du Royaume-Uni. On peut donc supposer que cela faussera nos résultats puisque la majorité des produits peuvent provenir de France. Cependant, on peut ajouter deux suppositions plausibles pour contrer ces inquiétudes.</p>
           <p>La première réside dans le fait que le climat et les pratiques du Royaume-Uni et de la France sont suffisamment proches pour estimer un coût similaire pour les différentes denrées.</p>
-          <p>La seconde découle de l'étude proposée par Hannah Ritchie sur <a href="https://ourworldindata.org/food-choice-vs-eating-local">l'impact du transport vis-à-vis de la production de la nourriture</a>. Cet article indique donc que l'on peut considérer que l'impact du transport depuis le Royaume-Uni vers la France, comme nul en comparaison avec l'impact de la production en elle-même.</p>
+          <p>La seconde découle de l'étude proposée par Hannah Ritchie sur <a href="https://ourworldindata.org/food-choice-vs-eating-local">l'impact du transport vis-à-vis de la production de la nourriture</a>. Cet article indique donc que l'on peut considérer l'impact du transport depuis le Royaume-Uni vers la France comme nul en comparaison de l'impact de la production elle-même.</p>
   
           <h2>Interface et interactions</h2>
-          <p>Nous souhaitons créer un dashboard qui permet de sélectionner des ingrédients (qui sont disposés dans la colonne de droite) dans la base de données pour composer une assiette (qui est disposée au centre de l'image), ainsi que la quantité de chaque ingrédient et son unité de mesure.</p>
-          <p>On peut aussi choisir des plats typiquement français (qui sont disposés en dessous de l'image), sélectionnés à l'avance par les membres de l'équipe.</p> 
-          <p>Une fois les ingrédients sélectionnés dans une assiette, le graphique indique la contribution de chaque ingrédient du plat à l'empreinte carbone, mesurée en équivalent de gaz à effet de serre.</p>
-          <p>Nous disposons de différentes assiettes qui peuvent être assemblées séparément, ce qui nous permet de comparer l'empreinte carbone de chaque plat.</p>
-          <p>Voici un aperçu de ce qui est attendu:</p>
+          <p>Nous avons créé un dashboard qui permet de sélectionner les plats que l'on souhaite comparer.</p>
+          <p>Sur un premier graphique, on peut sélectionner les informations que l'on veut comparer entre les différents plats sélectionnés. Les informations à comparer portent sur les impacts environnementaux d'un plat. On obtient alors un <b>digramme à barres groupées et empilées</b> nous permettant de comparer les plats sur les critères sélectionnés.</p>
+          <p>Dans une seconde partie, pour chaque plat sélectionné, on affiche un <b>graphique en anneaux</b> indiquant la quantité de glucides, de lipides et de protéines que chaque ingrédient apporte au plat.</p>
+          <p>Voici un aperçu de ce qui était initialement prévu:</p>
           <img src="assets/project-preview.png" alt="Prévisualisation" />
   
   
           <h2>Architecture et bibliothèques</h2>
-          <p>Pour afficher les données sous forme de page web, nous avons choisi de rester sur un fonctionnement assez simple, en n'utilisant aucun framework Javascript autre que D3.Js pour l'affichage des différents graphiques.</p>
+          <p>Pour afficher les données sous forme de page web, nous avons choisi de rester sur un fonctionnement assez simple, en n'utilisant aucun framework Javascript autre que D3.js pour l'affichage des différents graphiques.</p>
           <p>Cette approche nous permet de nous concentrer sur les graphiques et les données affichées, sans avoir trop de fichiers à gérer, ce qui pourrait être le cas si nous utilisons un framework comme React ou Vue. En n'incluant pas ces framework, nous pouvons être plus sereins quant à la taille finale du rendu, ce dernier étant limité à 10 Mo.</p>
+          <p>Afin d'éviter la redondance de code et d'avoir un code propre et factorisé, nous avons utilisés les <code>web components</code>. Cela a également facilité la répartition des tâches.</p>
           <p>Les données seront directement récupérées à leur source, aucune copie ne sera faite sur le serveur d'hébergement de notre page web.</p>
         </div>
         <script src="header.js" type="module"></script>
