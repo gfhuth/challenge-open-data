@@ -45,10 +45,24 @@ function getIngredientFromDatasetRow(row){
 }
 
 window.onload = async () => {
-    console.log(await getAndParseDataset());
+    await getAndParseDataset();
     createRecipes();
-    
+    console.log(Recipe.recipes["gratin_dauphinois"].getObjectBarChart("cal", "ges"))
     const mealsList = document.getElementById('meals-list')
+<<<<<<< HEAD
     mealsList.setAttribute('meals', JSON.stringify(Object.values(Recipe.recipes).map(r => r.name)))
     console.log(Recipe.recipes["a_la_minuta"].getNutritionHierarchy())
+=======
+    mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
+    mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
+    onSelectedMealsChanged({ data: mealsList.selectedItems });
+>>>>>>> 498b0ee5ce8a4ec793d47b762476f391cd010a32
+}
+
+function onSelectedMealsChanged(event) {
+    const meals = event.data;
+    const data = meals.map(meal => Recipe.recipes[meal])
+    const pieCharts = document.getElementById('pie-charts');
+    
+    pieCharts.setAttribute('data', JSON.stringify(data))
 }

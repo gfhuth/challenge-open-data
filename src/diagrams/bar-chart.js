@@ -1,26 +1,21 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-
-// set the dimensions and margins of the graph
-const margin = {top: 10, right: 30, bottom: 20, left: 50},
-width = 460 - margin.left - margin.right,
-height = 400 - margin.top - margin.bottom,
-padding = 40;
-
-// append the svg object to the body of the page
-var svg = d3.select("#bar-chart")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", `translate(${margin.left},${margin.top})`);
-
-
-// Create data
 //TODO : fonction pour appeler graphe avec les plats -> contient titre + ingrédients + valeur (pour chaque ingrédient) => formatb cf valeur de data
-function createBarChart(data) { 
+function createBarChart(data, origin) { 
+    // ---------- Constants ----------
+    const margin = {top: 10, right: 30, bottom: 20, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom,
+    padding = 40;
+    // ---------- Append the svg object to the body of the page ----------
+    const svg = d3.select(origin)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
     // ---------- Creation of separated stack bars ----------
-	var datasets = [
+	const datasets = [
         d3.stack()
             .keys(()=>{
             var ingredients = []; //list of keys
@@ -50,10 +45,10 @@ function createBarChart(data) {
     ];
             
             
-    var num_groups = datasets.length;
+    const num_groups = datasets.length;
 
     // ---------- Gestion des graphiques ----------
-    var xlabels = data.map(function(d) {
+    const xlabels = data.map(function(d) {
         return d['Plate']
     });
     
@@ -65,12 +60,12 @@ function createBarChart(data) {
     
     
     // Add Y axis -> cacher l'axe et mettre label sur chaque barre ?
-    var y1domain_max = d3.max(datasets[0].map(function(row) {
+    const y1domain_max = d3.max(datasets[0].map(function(row) {
         return d3.max(row.map(function(d) {
             return d[1];
         }));
     }));
-    var y2domain_max = d3.max(datasets[1].map(function(row) {
+    const y2domain_max = d3.max(datasets[1].map(function(row) {
         return d3.max(row.map(function(d) {
             return d[1];
         }));
@@ -84,12 +79,12 @@ function createBarChart(data) {
     .domain([0, y2domain_max])
     .range([ height, 0 ]); 
     
-    var xaxis = d3.axisBottom(x);
-    var y1axis = d3.axisLeft(y_1);
-    var y2axis = d3.axisRight(y_2);
+    const xaxis = d3.axisBottom(x);
+    const y1axis = d3.axisLeft(y_1);
+    const y2axis = d3.axisRight(y_2);
     
-    var accent_green = d3.scaleOrdinal(d3.schemeGreens[6]); //! LES MEMES INGREDIENTS N'ONT PAS MEME COULEUR
-    var accent_red = d3.scaleOrdinal(d3.schemeReds[6]);
+    const accent_green = d3.scaleOrdinal(d3.schemeGreens[6]); //! LES MEMES INGREDIENTS N'ONT PAS MEME COULEUR
+    //const accent_red = d3.scaleOrdinal(d3.schemeReds[6]);
     
     // ---------- Dessin des barres ----------
     d3.range(num_groups).forEach(function(gnum) {
@@ -128,7 +123,7 @@ function createBarChart(data) {
 
 
 //!NOTE : That is the expected format for calling the next function (Plate, type1 and type2 must have these names)
-var datas = [{
+const datas = [{
     Plate: "cat1",
     type1: {a:100, b:150},
     type2: {a:200, b:250},
@@ -152,3 +147,4 @@ var datas = [{
         
         
 createBarChart(datas) // First call to draw
+export {createBarChart, datas};
