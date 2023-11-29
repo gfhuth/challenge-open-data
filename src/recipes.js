@@ -20,7 +20,7 @@ export class Recipe {
   }
 
   getLipides() {
-    const qte_lipides = 0;
+    let qte_lipides = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
       const ing = Ingredient.ingredients[key];
@@ -30,25 +30,27 @@ export class Recipe {
   }
 
   getGlucides() {
-    qte_glucides = 0;
+    let qte_glucides = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_glucides += key.gcarb_kg*(value/1000);
+      const ing = Ingredient.ingredients[key];
+      qte_glucides += ing.gcarb_kg*(value/1000);
     })
     return qte_glucides;
   }
 
   getProteines() {
-    qte_proteines = 0;
+    let qte_proteines = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
-      qte_proteines += key.gprot_kg*(value/1000);
+      const ing = Ingredient.ingredients[key];
+      qte_proteines += ing.gprot_kg*(value/1000);
     })
     return qte_proteines;
   }
 
   getPoidsTotal() {
-    poids = 0;
+    const poids = 0;
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
       poids += value;
@@ -197,7 +199,7 @@ export function createRecipes() {
   
   /* Croissant */
   const croissant = new Recipe("croissant", "Croissant");
-  croissant.ingredients["croissant"] = 60;
+  croissant.ingredients["croissants"] = 60;
   
   /* Pain au chocolat */
   const pain_chocolat = new Recipe("pain_au_chocolat", "Pain au chocolat");
