@@ -26,7 +26,7 @@ function getIngredientFromDatasetRow(row){
                     toLowerCase().
                     replace(/'/g, '_');
         const obj_ghg_kg = parseFloat(values[2])
-        const obj_gprot_kg = obj_ghg_kg*100/values[4] # TODO: inf-> 0
+        const obj_gprot_kg = obj_ghg_kg*100/values[4] // TODO: inf-> 0
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
         const obj_kcalcarb_kg = (obj_ghg_kg*1000/values[3]) - (obj_gprot_kg*4 + obj_gfat_kg*9)
         const obj_land_use_kg = parseFloat(values[6])
