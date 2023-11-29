@@ -115,9 +115,9 @@ function createBarChart(data, features, targetElement) {
                 .attr("width", x.bandwidth() / num_groups)
                 .attr("height", (d) => {
                     if (gnum % 2 == 0) {
-                        return y_1(d[0]) - y_1(d[1]);
+                        return y_1(d[0]) - y_1(d[1]) || 0;
                     } else {
-                        return y_2(d[0]) - y_2(d[1]);
+                        return y_2(d[0]) - y_2(d[1]) || 0;
                     }
                 })
                 .attr(
@@ -127,22 +127,22 @@ function createBarChart(data, features, targetElement) {
                         return String("ing"); }
                 )
                 .on("mouseover", function (event,d) { // What happens when user hover a bar          
-                    // Reduce opacity of all rect to 0.2
-                    svg.selectAll(".group").style("opacity", 0.2)
+                    // // Reduce opacity of all rect to 0.2
+                    // svg.selectAll(".group").style("opacity", 0.2)
           
-                    // Highlight all rects of this subgroup with opacity 1. It is possible to select them since they have a specific class = their name.
-                    svg.selectAll("#" + this.id).style("opacity",1)
-                    console.log(svg.selectAll("#" + this.id))
-                    svg.selectAll("#"+this.id)
-                        .attr("title", "ingr")
+                    // // Highlight all rects of this subgroup with opacity 1. It is possible to select them since they have a specific class = their name.
+                    // svg.selectAll("#" + this.id).style("opacity",1)
+                    // //console.log(svg.selectAll("#" + this.id))
+                    // svg.selectAll("#"+this.id)
+                    //     .attr("title", "ingr")
                 })
                 .on("mouseleave", function (event,d) { // When user do not hover anymore
           
-                    // Back to normal opacity: 1
-                    svg.selectAll(".group")
-                        .style("opacity",1)
-                    svg.selectAll("#"+this.id)
-                        .attr("title", "")
+                    // // Back to normal opacity: 1
+                    // svg.selectAll(".group")
+                    //     .style("opacity",1)
+                    // svg.selectAll("#"+this.id)
+                    //     .attr("title", "")
                 })
     });
 
@@ -162,7 +162,7 @@ function createBarChart(data, features, targetElement) {
         .attr("y", padding)
         .attr("dy", "1em")
         .attr("transform", "rotate(-90)")
-        .text(features[0]) ;//TODO : pretty scale
+        .text(features[0]) ;//TODO : pretty scale name
 
     svg.append("g")
         .attr("class", "axis y2")
@@ -174,7 +174,7 @@ function createBarChart(data, features, targetElement) {
         .attr("y", width)
         .attr("dy", "-0.5em")
         .attr("transform", "rotate(-90)")
-        .text(features[1]) ;//TODO : pretty scale
+        .text(features[1]) ;//TODO : pretty scale name
     
 }
 
