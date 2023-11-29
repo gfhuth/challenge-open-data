@@ -4,7 +4,7 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 function createBarChart(data, features, targetElement) {
     // ---------- Constants ----------
     const margin = { top: 10, right: 30, bottom: 20, left: 50 },
-        width = 460 - margin.left - margin.right,
+        width = 460 - margin.left - margin.right, //TODO : size them dynamically
         height = 400 - margin.top - margin.bottom,
         padding = 40;
     // ---------- Append the svg object to the body of the page ----------
@@ -16,32 +16,7 @@ function createBarChart(data, features, targetElement) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
     // ---------- Creation of separated stack bars ----------
-    // const datasets = [
-    //     d3
-    //         .stack()
-    //         .keys(() => {
-    //             var ingredients = []; //list of keys
-    //             Object.entries(data).forEach(([typeName, typeIngr]) => {
-    //                 Object.keys(typeIngr["type1"]).forEach((ingr, value) => {
-    //                     if (!ingredients.includes(ingr)) ingredients.push(ingr); //add to list (no duplicata!!!)
-    //                 });
-    //             });
-    //             return ingredients;
-    //         })
-    //         .value((obj, key) => obj.type1[key])(data),
-    //     d3
-    //         .stack()
-    //         .keys(() => {
-    //             var ingredients = []; //list of keys
-    //             Object.entries(data).forEach(([typeName, typeIngr]) => {
-    //                 Object.keys(typeIngr["type2"]).forEach((ingr, value) => {
-    //                     if (!ingredients.includes(ingr)) ingredients.push(ingr); //add to list
-    //                 });
-    //             });
-    //             return ingredients;
-    //         })
-    //         .value((obj, key) => obj.type2[key])(data),
-    // ];
+
     if (!features) features = [];
     const datasets = features.map((feature) =>
         d3
@@ -114,37 +89,61 @@ function createBarChart(data, features, targetElement) {
         else return accent_red
     }
 
+
     // ---------- Dessin des barres ----------
     d3.range(num_groups).forEach(function (gnum) {
         svg.selectAll("g.group" + gnum)
             .data(datasets[gnum])
             .enter()
             .append("g")
-            .attr("fill", getColor(gnum)) //TODO modify color domain to split with two colors scheme (worth it?)
-            .attr("class", "group" + gnum)
+            .attr("fill", getColor(gnum)) 
+            .attr("class", "group " + gnum)
             .selectAll("rect")
             .data((d) => d)
-            .enter()
-            .append("rect")
-            .attr(
-                "x",
-                (d, i) => x(xlabels[i]) + (x.bandwidth() / num_groups) * gnum
-            )
-            .attr("y", (d) => {
-                if (gnum % 2 == 0) {
-                    return y_1(d[1]);
-                } else {
-                    return y_2(d[1]);
-                }
-            })
-            .attr("width", x.bandwidth() / num_groups)
-            .attr("height", (d) => {
-                if (gnum % 2 == 0) {
-                    return y_1(d[0]) - y_1(d[1]);
-                } else {
-                    return y_2(d[0]) - y_2(d[1]);
-                }
-            });
+            .join("rect")
+                .attr(
+                    "x",
+                    (d, i) => x(xlabels[i]) + (x.bandwidth() / num_groups) * gnum
+                )
+                .attr("y", (d,i) => {
+                    if (gnum % 2 == 0) {
+                        return y_1(d[1]);
+                    } else {
+                        return y_2(d[1]);
+                    }
+                })
+                .attr("width", x.bandwidth() / num_groups)
+                .attr("height", (d) => {
+                    if (gnum % 2 == 0) {
+                        return y_1(d[0]) - y_1(d[1]);
+                    } else {
+                        return y_2(d[0]) - y_2(d[1]);
+                    }
+                })
+                .attr(
+                    "id",
+                    (d,i,...args) => {
+                        //console.log(d.data);
+                        return String("ing"); }
+                )
+                .on("mouseover", function (event,d) { // What happens when user hover a bar          
+                    // Reduce opacity of all rect to 0.2
+                    svg.selectAll(".group").style("opacity", 0.2)
+          
+                    // Highlight all rects of this subgroup with opacity 1. It is possible to select them since they have a specific class = their name.
+                    svg.selectAll("#" + this.id).style("opacity",1)
+                    console.log(svg.selectAll("#" + this.id))
+                    svg.selectAll("#"+this.id)
+                        .attr("title", "ingr")
+                })
+                .on("mouseleave", function (event,d) { // When user do not hover anymore
+          
+                    // Back to normal opacity: 1
+                    svg.selectAll(".group")
+                        .style("opacity",1)
+                    svg.selectAll("#"+this.id)
+                        .attr("title", "")
+                })
     });
 
     // ---------- Dessin des axes ----------
@@ -152,14 +151,31 @@ function createBarChart(data, features, targetElement) {
         .attr("class", "axis x")
         .attr("transform", "translate(0," + height + ")")
         .call(xaxis);
+
     svg.append("g")
         .attr("class", "axis y1")
         .attr("transform", "translate(" + padding + ",0)")
         .call(y1axis);
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", padding)
+        .attr("dy", "1em")
+        .attr("transform", "rotate(-90)")
+        .text(features[0]) ;//TODO : pretty scale
+
     svg.append("g")
         .attr("class", "axis y2")
         .attr("transform", "translate(" + width + ",0)")
         .call(y2axis);
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", width)
+        .attr("dy", "-0.5em")
+        .attr("transform", "rotate(-90)")
+        .text(features[1]) ;//TODO : pretty scale
+    
 }
 
 //!NOTE : That is the expected format for calling the next function (Plate, type1 and type2 must have these names)
