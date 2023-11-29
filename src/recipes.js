@@ -63,6 +63,7 @@ export class Recipe {
     Object.keys(this.ingredients).forEach(key => {
       let value = this.ingredients[key];
       const ing = Ingredient.ingredients[key];
+      console.log(Ingredient.ingredients)
       dico[ing.name] = ing.energyTotal_kg * (value/1000);
     })
     return dico;
@@ -96,6 +97,48 @@ export class Recipe {
       dico[ing.name] = ing.water_kg * (value/1000);
     })
     return dico;
+  }
+
+  getObjectBarChart(type1, type2){
+    const obj = {
+      Plate : this.name
+    }
+    switch(type1){
+      case 'cal':
+        obj.type1 = this.getApportCalorique();
+        break;
+      case 'ges':
+        obj.type1 = this.getEmissionGES();
+        break;
+      case 'land':
+        obj.type1 = this.getLandUse();
+        break;
+      case 'water':
+        obj.type1 = this.getWaterUse();
+        break;
+      default:
+        console.log("oupsi y a un souci dans le type1")
+        break;
+    }
+    switch(type2){
+      case 'cal':
+        obj.type2 = this.getApportCalorique();
+        break;
+      case 'ges':
+        obj.type2 = this.getEmissionGES();
+        break;
+      case 'land':
+        obj.type2 = this.getLandUse();
+        break;
+      case 'water':
+        obj.type2 = this.getWaterUse();
+        break;
+      default:
+        console.log("oupsi y a un souci dans le type2")
+        break;
+    }
+    return obj
+    
   }
 }
 
