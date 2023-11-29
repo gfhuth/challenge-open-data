@@ -31,3 +31,11 @@ main {
         margin-right: 0;
     }
 }
+
+code {
+    font-family: Consolas,"courier new";
+    color: crimson;
+    background-color: #bdbdbd;
+    padding: 3px;
+    font-size: 100%;
+  }
