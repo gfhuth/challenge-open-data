@@ -39,3 +39,6 @@ code {
     padding: 3px;
     font-size: 100%;
   }
+#camembert_chart{
+    max-width: 900px;
+}

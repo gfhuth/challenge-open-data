@@ -7,13 +7,13 @@ templateDiagramList.innerHTML = /*html*/ `
     flex-direction: row;
     flex-wrap: wrap;
     margin: 0 auto;
+    justify-content: space-evenly;
     gap: 0.6rem
   }
 
   .diagram {
-    flex-grow: 1;
     min-height: 100px;
-    min-width: 300px;
+    width: 450px;
     display: flex;
     align-items: center;
     flex-direction: column;

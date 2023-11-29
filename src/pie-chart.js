@@ -1,16 +1,26 @@
+import {
+  camebert_chart
+} from "./diagrams/camembert-chart.js"
+
 const templatePieChart = document.createElement("template");
 templatePieChart.innerHTML = /*html*/ `
-<p id="name">Nom du plat</p>
-<div>
-  <span class="rond"></span>
+<div id="container">
+  <p id="name">Nom du plat</p>
+  <div id="pie-chart">
+  </div>
 </div>
 <style>
-  .rond {
-    display: block;
-    background-color: red;
-    border-radius: 1000px;
-    height: 200px;
-    width: 200px;
+  #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    width: calc(100% - 2*3rem)
+  }
+
+  #pie-chart {
+    min-width: 100px;
+    width: 100%;
   }
 </style>
 `;
@@ -27,13 +37,18 @@ class PieChart extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.getElementById('name').innerHTML = this.data.name;
+    this.shadowRoot.getElementById("name").innerHTML = this.data.name;
+    const targetElement = this.shadowRoot.getElementById("pie-chart");
+    targetElement.innerHTML = "";
+    camebert_chart(this.data, targetElement)
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "data") newValue = JSON.parse(newValue);
-    this[name] = newValue;
-    this.render();
+    if (name === "data") {
+      newValue = JSON.parse(newValue);
+      this.data = newValue
+      this.render();
+    }
   }
 }
 

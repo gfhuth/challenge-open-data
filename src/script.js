@@ -1,5 +1,6 @@
 import { Ingredient } from "./ingredients.js"
 import { Recipe, createRecipes } from "./recipes.js";
+import { camebert_chart } from "./diagrams/camembert-chart.js";
 const DATASET_LINK = "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022)/Environmental%20impacts%20of%20food%20(Clark%20et%20al.%202022).csv";
 
 async function getAndParseDataset(){
@@ -25,6 +26,7 @@ function getIngredientFromDatasetRow(row){
         const obj_name = values[0].replace(/\s+/g, '_').
                     toLowerCase().
                     replace(/'/g, '_');
+        const obj_displayName = values[0]
         const obj_ghg_kg = parseFloat(values[2])
         let obj_gprot_kg = obj_ghg_kg*100/values[4]
         if (!Number.isFinite(obj_gprot_kg)) {
@@ -36,10 +38,11 @@ function getIngredientFromDatasetRow(row){
         const obj_water_kg = parseFloat(values[18])
         const obj = new Ingredient(
             obj_name,
+            obj_displayName,
             obj_ghg_kg,
-            obj_gprot_kg,
-            obj_gfat_kg,
-            obj_kcalcarb_kg/4,
+            isFinite(obj_gprot_kg) ? obj_gprot_kg : 0.0,
+            isFinite(obj_gfat_kg) ? obj_gfat_kg : 0.0,
+            isFinite(obj_kcalcarb_kg/4) ? obj_kcalcarb_kg/4 : 0.0,
             obj_land_use_kg,
             obj_water_kg
         );
@@ -49,17 +52,28 @@ function getIngredientFromDatasetRow(row){
 window.onload = async () => {
     await getAndParseDataset();
     createRecipes();
-    //console.log(Recipe.recipes["gratin_dauphinois"].getObjectBarChart("cal", "ges"))
+    
     const mealsList = document.getElementById('meals-list')
     mealsList.addEventListener('listitemschanged', onSelectedMealsChanged)
     mealsList.setAttribute('items', JSON.stringify(Object.values(Recipe.recipes)))
     onSelectedMealsChanged({ data: mealsList.selectedItems });
+    // console.log(Recipe.recipes["risotto"].getNutritionHierarchy())
+    // document.getElementById('camembert_chart')
+    //     .appendChild(
+    //         camebert_chart(
+    //             Recipe.recipes["risotto"].getNutritionHierarchy()
+    //         )
+    //     )
+    //     console.log(JSON.stringify(Recipe.recipes["risotto"].getNutritionHierarchy()));
+
 }
 
 function onSelectedMealsChanged(event) {
     const meals = event.data;
-    const data = meals.map(meal => Recipe.recipes[meal])
+    const recipes = meals.map(meal => Recipe.recipes[meal])
     const pieCharts = document.getElementById('pie-charts');
-    
-    pieCharts.setAttribute('data', JSON.stringify(data))
+    const barChart = document.getElementById('bar-chart');
+
+    pieCharts.setAttribute('data', JSON.stringify(recipes.map(r => r.getNutritionHierarchy())));
+    barChart.setAttribute('data', JSON.stringify(recipes.map(r => r.formatForBarChart())))
 }

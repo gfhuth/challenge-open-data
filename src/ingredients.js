@@ -2,8 +2,9 @@
 export class Ingredient {
   static ingredients = {}
 
-  constructor(_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
+  constructor(_name, _display_name, _ghg_kg, _gprot_kg, _gfat_kg, _gcarb_kg, _land_use_kg, _water_kg) {
     this.name = _name;
+    this.displayName = _display_name;
     this.ghg_kg = _ghg_kg;
     this.gprot_kg = _gprot_kg
     this.gfat_kg = _gfat_kg
