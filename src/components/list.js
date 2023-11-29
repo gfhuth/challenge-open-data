@@ -19,7 +19,6 @@ templateList.innerHTML = /*html*/ `
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
     gap: 0.6rem;
   }

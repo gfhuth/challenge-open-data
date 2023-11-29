@@ -17,6 +17,7 @@ templateHeader.innerHTML = /*html*/ `
     height: 100px;
     width: 100vw;
     box-shadow: 2px 2px 5px 1px rgba(0,0,0,.8);
+    z-index: 1;
   }
 
   #menu a {
@@ -39,11 +40,9 @@ templateHeader.innerHTML = /*html*/ `
     }
 }
 </style>
-`
+`;
 
 class Header extends HTMLElement {
-
-
   constructor() {
     super();
     this.attachShadow({
