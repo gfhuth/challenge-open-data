@@ -1,4 +1,4 @@
-import { createBarChart } from "./diagrams/bar-chart.js";
+import { createBarChart } from "./charts/bar-chart.js";
 
 const templateBarChart = document.createElement("template");
 templateBarChart.innerHTML = /*html*/ `
