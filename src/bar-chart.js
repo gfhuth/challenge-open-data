@@ -4,7 +4,23 @@ const templateBarChart = document.createElement("template");
 templateBarChart.innerHTML = /*html*/ `
 <div id="container">
   <div id="bar-chart"></div>
+  <div id="select-container">
+  <select id="feature-1"></select>
+  <select id="feature-2"></select>
+  </div>
 </div>
+<style>
+#select-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+select {
+  background-color: #ffffff;
+}
+</style>
 `;
 
 class BarChart extends HTMLElement {
@@ -17,10 +33,8 @@ class BarChart extends HTMLElement {
     });
     this.data = [];
     this.shadowRoot.append(templateBarChart.content.cloneNode(true));
-    const container = this.shadowRoot.getElementById("container");
-    const list = document.createElement("x-list");
-    this.allFeatures = [
-      {
+
+    this.allFeatures = [{
         id: "apportCalorique",
         name: "Apport calorique",
       },
@@ -37,20 +51,51 @@ class BarChart extends HTMLElement {
         name: "Utilisation de l'eau",
       },
     ];
-    list.setAttribute("items", JSON.stringify(this.allFeatures));
-    list.setAttribute("default", "apportCalorique,emissionGES");
-    list.addEventListener("listitemschanged", (event) => {
-      this.features = event.data;
-      this.render();
+    this.features = ["apportCalorique", "emissionGES"]
+
+    const select_1 = this.shadowRoot.getElementById("feature-1")
+    const select_2 = this.shadowRoot.getElementById("feature-2")
+
+    select_1.addEventListener("change", () => {
+      this.features = [select_1.value, select_2.value];
+      this.render()
     });
-    container.appendChild(list);
-    this.features = list.selectedItems || [];
+    select_2.addEventListener("change", () => {
+      this.features = [select_1.value, select_2.value];
+      this.render()
+    });
+
     this.render();
   }
 
   render() {
     const targetElement = this.shadowRoot.getElementById("bar-chart");
     targetElement.innerHTML = "";
+
+    const select_1 = this.shadowRoot.getElementById("feature-1")
+    select_1.innerHTML = ""
+    const select_2 = this.shadowRoot.getElementById("feature-2")
+    select_2.innerHTML = ""
+
+    this.allFeatures.filter((feature) => feature.id != this.features[1]).forEach((feature) => {
+      const option = document.createElement("option");
+      option.setAttribute("value", feature.id);
+      option.appendChild(document.createTextNode(feature.name));
+      select_1.appendChild(option);
+    })
+
+    this.allFeatures.filter((feature) => feature.id != this.features[0]).forEach((feature) => {
+      const option = document.createElement("option");
+      option.setAttribute("value", feature.id);
+      option.appendChild(document.createTextNode(feature.name));
+      select_2.appendChild(option);
+    })
+
+    const selectedItem_1 = select_1.querySelector(`option[value="${this.features[0]}"]`);
+    selectedItem_1.setAttribute("selected", true);
+    const selectedItem_2 = select_2.querySelector(`option[value="${this.features[1]}"]`);
+    selectedItem_2.setAttribute("selected", true);
+
     // createBarChart(this.data, this.features.map(f => this.allFeatures.find(fe => fe.id === f)), targetElement);
     createBarChart(
       this.data,
