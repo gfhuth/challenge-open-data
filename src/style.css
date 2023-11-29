@@ -16,9 +16,17 @@ main {
 
 #doc img {
     display: block;
-    margin-left: 30vh;
-    width: 80vh;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    width: 70vw;
     border: 2px solid #ddd;
     border-radius: 4px;
     padding: 5px;
+}
+
+@media screen and (max-width: 800px) {
+    #doc img {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
