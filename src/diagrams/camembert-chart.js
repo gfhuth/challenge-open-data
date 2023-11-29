@@ -31,17 +31,12 @@ export function camebert_chart(recipe_hierarchy, targetElement) {
         .outerRadius((d) => Math.max(d.y0 * radius, d.y1 * radius - 1));
 
     // Create the SVG container.
-    // const svg = d3
-    //     .create("svg")
-    //     .attr("viewBox", [-width / 2, -height / 2, width, width])
-    //     .style("font", "10px sans-serif");
-
     const svg = d3
         .select(targetElement)
         .append("svg")
         .attr("viewBox", [-width / 2, -height / 2, width, width])
         .attr("preserveAspectRation", "xMidYMid meet")
-        .style("font", "10px sans-serif");
+        .style("font", "25px sans-serif");
 
     // Append the arcs.
     const path = svg
@@ -72,9 +67,9 @@ export function camebert_chart(recipe_hierarchy, targetElement) {
         (d) =>
             `${d
                 .ancestors()
-                .map((d) => d.data.name)
+                .map((d) => d.data.displayName || d.data.name)
                 .reverse()
-                .join("/")}\n${format(d.value)}`
+                .join("/")}\n${format(d.value)}g`
     );
 
     const label = svg
@@ -88,7 +83,7 @@ export function camebert_chart(recipe_hierarchy, targetElement) {
         .attr("dy", "0.35em")
         .attr("fill-opacity", (d) => +labelVisible(d.current))
         .attr("transform", (d) => labelTransform(d.current))
-        .text((d) => d.data.name);
+        .text((d) => d.data.displayName);
 
     const parent = svg
         .append("circle")

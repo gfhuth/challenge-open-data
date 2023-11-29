@@ -108,6 +108,7 @@ export class Recipe {
     getProtHierarchy() {
         return Object.entries(this.ingredients).map(([name, qtt]) => ({
             "name": name,
+            "displayName": Ingredient.ingredients[name].displayName,
             "value": Ingredient.ingredients[name].gprot_kg * qtt
         })
         )
@@ -115,6 +116,7 @@ export class Recipe {
     getCarbHierarchy() {
         return Object.entries(this.ingredients).map(([name, qtt]) => ({
             "name": name,
+            "displayName": Ingredient.ingredients[name].displayName,
             "value": Ingredient.ingredients[name].gcarb_kg * qtt
         })
         )
@@ -122,6 +124,7 @@ export class Recipe {
     getFatHierarchy() {
         return Object.entries(this.ingredients).map(([name, qtt]) => ({
             "name": name,
+            "displayName": Ingredient.ingredients[name].displayName,
             "value": Ingredient.ingredients[name].gfat_kg * qtt
         })
         )
@@ -133,14 +136,17 @@ export class Recipe {
             "children": [
                 {
                     "name": "protein",
+                    "displayName": "Protéines",
                     "children": this.getProtHierarchy()
                 },
                 {
                     "name": "carbohydrate",
+                    "displayName": "Glucides",
                     "children": this.getCarbHierarchy()
                 },
                 {
                     "name": "fat",
+                    "displayName": "Lipides",
                     "children": this.getFatHierarchy()
                 }
             ]

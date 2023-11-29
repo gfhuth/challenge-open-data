@@ -26,6 +26,7 @@ function getIngredientFromDatasetRow(row){
         const obj_name = values[0].replace(/\s+/g, '_').
                     toLowerCase().
                     replace(/'/g, '_');
+        const obj_displayName = values[0]
         const obj_ghg_kg = parseFloat(values[2])
         const obj_gprot_kg = obj_ghg_kg*100/values[4] // TODO: inf-> 0
         const obj_gfat_kg = obj_ghg_kg*100/values[5]
@@ -34,6 +35,7 @@ function getIngredientFromDatasetRow(row){
         const obj_water_kg = parseFloat(values[18])
         const obj = new Ingredient(
             obj_name,
+            obj_displayName,
             obj_ghg_kg,
             isFinite(obj_gprot_kg) ? obj_gprot_kg : 0.0,
             isFinite(obj_gfat_kg) ? obj_gfat_kg : 0.0,
