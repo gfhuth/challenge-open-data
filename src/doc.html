@@ -56,7 +56,19 @@
 
           <h2>Traitements opérés</h2>
           <p>Après avoir été parsées, les données sont envoyés dans des instances de la classe Ingredient. Elles servent au calcul de valeurs pour chaque plat, représentant l'apport calorique (protéines, glucides, lipides), les émissions de GES, l'utilisation des sols, et l'utilisation d'eau.</p>
-          <p>Ces valeurs sont alors représentées par un diagramme à barres, ainsi qu'un graphique en anneaux.</p>
+          <p>Ces valeurs sont alors représentées par un diagramme à barres, ainsi qu'un graphique en anneaux. Les unités pour chaque valeur sont les suivantes (éventuellement rapportées par kg de l'aliment cible):</p>
+          <ul>
+            <li>Emission gaz à effet de serre : kg</li>
+            <li>Utilisation du sol : m²</li>
+            <li>Utilisation de l'eau : L</li>
+            <li>Apport caloriques : kcal</li>
+          </ul>
+
+          <p>D'autre part, notre base de données nous ayant fourni des valeurs en grammes d'émissions de gaz à effet de serre par gramme de protéines et de matières grasses, nous avons pensé qu'il serait plus approprié pour notre application de les convertir et de les stocker en grammes de protéines et de matières grasses par kg d'aliments, respectivement.</p>
+
+          <p>Comme on peut le voir sur la page <a href=https://en.wikipedia.org/wiki/Nutrient#Macronutrients>Wikipedia</a>, nous disposons de 3 macronutriments essentiels : les protéines, les glucides et les lipides. On peut convertir leur masse en grammes en énergie mesurée en kcal. Nous avons notamment utilisé cela pour calculer les apports en glucides pour chaque aliment, les autres valeurs étant calculables via les différentes valeurs pour les émissions de gaz à effet de serre.</p>
+          
+          <p>Il y avait également des valeurs manquantes, elles ont donc été analysées individuellement et une valeur de zéro leur a été attribuée au momment de traiter les données</p>
 
           <h2>Analyse Green IT</h2>
           <img id="green-it-report" src="assets/green-it-report.png" alt="Green IT report" />
