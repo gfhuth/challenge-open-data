@@ -1,92 +1,128 @@
-# open-data
+# Challenge Open Data
+![Alt text](imgs/compare_cal_ges.png)
+![Alt text](imgs/nut_pizza_chart.png)
+![Alt text](imgs/scatter_chart.png)
+## Membres du groupe
 
+- Maud Bergonzoli
+- Anaïs Potel
+- Guilherme Faccin Huth
+- Bruno Carrère
+- Samuel Thiken
 
+## Introduction
 
-## Getting started
+L'objectif de ce projet est de mettre en oeuvre une visualisation d'un grand nombre de données open data. En effet, on se retrouve aujourd'hui à avoir de plus en plus de données. Mais sans pouvoir interpréter ces données, il serait inutile de les récolter.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Ainsi, à partir d'un jeu de données préalablement choisi, nous allons mettre en valeur certains aspects des données afin de pouvoir en extraire le plus d'information possible. Pour cela, il sera nécessaire de choisir une représentation graphique adaptée des données afin d'avoir une visualisation lisible et compréhensible pour un humain.
+## Jeu de données choisi
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Nous avons donc choisi le jeu de données fourni par : Environmental impacts of food (Clark et al. 2022)
 
-## Add your files
+Ce set de données indique, pour une liste étendue d'ingrédients, leurs impacts environnementaux (eau requise, espace nécessaire, quantité de gaz à effet de serre émise) ramené au poids, nombre de calories ou de protéines.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Le but est alors d'évaluer, selon ces critères, l'impact de plats typiquement français. On peut notamment prendre comme exemple les plats suivants, composés d'ingrédients simples :
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/open-data3/open-data.git
-git branch -M main
-git push -uf origin main
-```
+- Poulet basquaise : poulet, tomates, poivrons, oignons, huile d'olive
+- Gratin dauphinois : patates, crème, lait
+- Boeuf bourguignon : boeuf, vin, carottes, oignons.
 
-## Integrate with your tools
+De plus, pour chaque plat, on cherche à mettre en valeur la quantité de glucides, lipides et protéines pour chaque ingrédient.
 
-- [ ] [Set up project integrations](https://gitlab.com/open-data3/open-data/-/settings/integrations)
+On notera que ces données proviennent du Royaume-Uni. On peut donc supposer que cela faussera nos résultats puisque la majorité des produits peuvent provenir de France. Cependant, on peut ajouter deux suppositions plausibles pour contrer ces inquiétudes.
 
-## Collaborate with your team
+La première réside dans le fait que le climat et les pratiques du Royaume-Uni et de la France sont suffisamment proches pour estimer un coût similaire pour les différentes denrées.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+La seconde découle de l'étude proposée par Hannah Ritchie sur l'impact du transport vis-à-vis de la production de la nourriture. Cet article indique donc que l'on peut considérer l'impact du transport depuis le Royaume-Uni vers la France comme nul en comparaison de l'impact de la production elle-même.
+## Interface et interactions
 
-## Test and Deploy
+Nous avons créé un dashboard qui permet de sélectionner les plats que l'on souhaite comparer.
 
-Use the built-in continuous integration in GitLab.
+Sur un premier graphique, on peut sélectionner les informations que l'on veut comparer entre les différents plats sélectionnés. Les informations à comparer portent sur les impacts environnementaux d'un plat. On obtient alors un diagramme à barres groupées et empilées nous permettant de comparer les plats sur les critères sélectionnés.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Dans une seconde partie, pour chaque plat sélectionné, on affiche un graphique en anneaux indiquant la quantité de glucides, de lipides et de protéines que chaque ingrédient apporte au plat.
+## Architecture et bibliothèques
 
-***
+Pour afficher les données sous forme de page web, nous avons choisi de rester sur un fonctionnement assez simple, en n'utilisant aucun framework Javascript autre que D3.js pour l'affichage des différents graphiques.
 
-# Editing this README
+Cette approche nous permet de nous concentrer sur les graphiques et les données affichées, sans avoir trop de fichiers à gérer, ce qui pourrait être le cas si nous utilisons un framework comme React ou Vue. En n'incluant pas ces framework, nous pouvons être plus sereins quant à la taille finale du rendu, ce dernier étant limité à 10 Mo.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Afin d'éviter la redondance de code et d'avoir un code propre et factorisé, nous avons utilisés les web components. Cela a également facilité la répartition des tâches.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Les données seront directement récupérées à leur source, aucune copie ne sera faite sur le serveur d'hébergement de notre page web.
+## Traitements opérés
 
-## Name
-Choose a self-explaining name for your project.
+Après avoir été parsées, les données sont envoyés dans des instances de la classe Ingredient. Elles servent au calcul de valeurs pour chaque plat, représentant l'apport calorique (protéines, glucides, lipides), les émissions de GES, l'utilisation des sols, et l'utilisation d'eau.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Ces valeurs sont alors représentées par un diagramme à barres, ainsi qu'un graphique en anneaux. Les unités pour chaque valeur sont les suivantes (éventuellement rapportées par kg de l'aliment cible):
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+- Emission gaz à effet de serre : kg
+- Utilisation du sol : m²
+- Utilisation de l'eau : L
+- Apport caloriques : kcal
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+D'autre part, notre base de données nous ayant fourni des valeurs en grammes d'émissions de gaz à effet de serre par gramme de protéines et de matières grasses, nous avons pensé qu'il serait plus approprié pour notre application de les convertir et de les stocker en grammes de protéines et de matières grasses par kg d'aliments, respectivement.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Comme on peut le voir sur la page Wikipedia, nous disposons de 3 macronutriments essentiels : les protéines, les glucides et les lipides. On peut convertir leur masse en grammes en énergie mesurée en kcal. Nous avons notamment utilisé cela pour calculer les apports en glucides pour chaque aliment, les autres valeurs étant calculables via les différentes valeurs pour les émissions de gaz à effet de serre.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Il y avait également des valeurs manquantes, elles ont donc été analysées individuellement et une valeur de zéro leur a été attribuée au momment de traiter les données
+## Analyse Green IT
+Challenge Open Data
+Membres du groupe
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+    Maud Bergonzoli
+    Anaïs Potel
+    Guilherme Faccin Huth
+    Bruno Carrère
+    Samuel Thiken
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Introduction
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+L'objectif de ce projet est de mettre en oeuvre une visualisation d'un grand nombre de données open data. En effet, on se retrouve aujourd'hui à avoir de plus en plus de données. Mais sans pouvoir interpréter ces données, il serait inutile de les récolter.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Ainsi, à partir d'un jeu de données préalablement choisi, nous allons mettre en valeur certains aspects des données afin de pouvoir en extraire le plus d'information possible. Pour cela, il sera nécessaire de choisir une représentation graphique adaptée des données afin d'avoir une visualisation lisible et compréhensible pour un humain.
+Jeu de données choisi
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Nous avons donc choisi le jeu de données fourni par : Environmental impacts of food (Clark et al. 2022)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Ce set de données indique, pour une liste étendue d'ingrédients, leurs impacts environnementaux (eau requise, espace nécessaire, quantité de gaz à effet de serre émise) ramené au poids, nombre de calories ou de protéines.
 
-## License
-For open source projects, say how it is licensed.
+Le but est alors d'évaluer, selon ces critères, l'impact de plats typiquement français. On peut notamment prendre comme exemple les plats suivants, composés d'ingrédients simples :
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+    Poulet basquaise : poulet, tomates, poivrons, oignons, huile d'olive
+    Gratin dauphinois : patates, crème, lait
+    Boeuf bourguignon : boeuf, vin, carottes, oignons.
+
+De plus, pour chaque plat, on cherche à mettre en valeur la quantité de glucides, lipides et protéines pour chaque ingrédient.
+
+On notera que ces données proviennent du Royaume-Uni. On peut donc supposer que cela faussera nos résultats puisque la majorité des produits peuvent provenir de France. Cependant, on peut ajouter deux suppositions plausibles pour contrer ces inquiétudes.
+
+La première réside dans le fait que le climat et les pratiques du Royaume-Uni et de la France sont suffisamment proches pour estimer un coût similaire pour les différentes denrées.
+
+La seconde découle de l'étude proposée par Hannah Ritchie sur l'impact du transport vis-à-vis de la production de la nourriture. Cet article indique donc que l'on peut considérer l'impact du transport depuis le Royaume-Uni vers la France comme nul en comparaison de l'impact de la production elle-même.
+Interface et interactions
+
+Nous avons créé un dashboard qui permet de sélectionner les plats que l'on souhaite comparer.
+
+Sur un premier graphique, on peut sélectionner les informations que l'on veut comparer entre les différents plats sélectionnés. Les informations à comparer portent sur les impacts environnementaux d'un plat. On obtient alors un diagramme à barres groupées et empilées nous permettant de comparer les plats sur les critères sélectionnés.
+
+Dans une seconde partie, pour chaque plat sélectionné, on affiche un graphique en anneaux indiquant la quantité de glucides, de lipides et de protéines que chaque ingrédient apporte au plat.
+
+Voici un aperçu de ce qui était initialement prévu:
+Prévisualisation
+Architecture et bibliothèques
+
+Pour afficher les données sous forme de page web, nous avons choisi de rester sur un fonctionnement assez simple, en n'utilisant aucun framework Javascript autre que D3.js pour l'affichage des différents graphiques.
+
+Cette approche nous permet de nous concentrer sur les graphiques et les données affichées, sans avoir trop de fichiers à gérer, ce qui pourrait être le cas si nous utilisons un framework comme React ou Vue. En n'incluant pas ces framework, nous pouvons être plus sereins quant à la taille finale du rendu, ce dernier étant limité à 10 Mo.
+
+Afin d'éviter la redondance de code et d'avoir un code propre et factorisé, nous avons utilisés les web components. Cela a également facilité la répartition des tâches.
+
+Les données seront directement récupérées à leur source, aucune copie ne sera faite sur le serveur d'hébergement de notre page web.
+Traitements opérés
+
+Après avoir été parsées, les données sont envoyés dans des instances de la classe Ingredient. Elles servent au calcul de valeurs pour chaque plat, représentant l'apport calorique (protéines, glucides, lipides), les émissions de GES, l'utilisation des sols, et l'utilisation d'eau.
+
+Ces valeurs sont alors représentées par un diagramme à barres, ainsi qu'un graphique en anneaux.
+## Analyse Green IT
+![Alt text](src/assets/green-it-report.png)
